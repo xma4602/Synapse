@@ -27,7 +27,7 @@ public class ExperimentParameters implements Cloneable, Externalizable, Reportab
         report.add("ExperimentParameters:\n");
         trainingParameters.getReport().forEach(r -> report.add("\t" + r));
         netParameters.getReport().forEach(r -> report.add("\t" + r));
-        sampleService.getReport().forEach(r -> report.add("\t" + r));
+       // sampleService.getReport().forEach(r -> report.add("\t" + r));
 
         return report;
     }

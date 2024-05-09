@@ -15,7 +15,7 @@ import static com.synapse.core.tools.DelayedFormatter.format;
 @Slf4j
 public class Tester {
 
-    public static final double OVERFITTING_LIMIT = 0;
+    public static final double OVERFITTING_LIMIT = 0.2;
     /**
      * Коэффициенты формулы для расчета скорости
      */

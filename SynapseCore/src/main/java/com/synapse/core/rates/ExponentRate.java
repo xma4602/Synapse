@@ -46,15 +46,4 @@ public class ExponentRate implements Rate {
             throw new IllegalArgumentException("Argument \"curve\" must be greater than zero, but was " + curve);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ExponentRate that)) return false;
-        return Double.compare(that.height, height) == 0 && Double.compare(that.curve, curve) == 0;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(height, curve);
-    }
 }

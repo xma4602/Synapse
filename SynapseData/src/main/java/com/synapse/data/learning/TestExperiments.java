@@ -1,11 +1,13 @@
 package com.synapse.data.learning;
 
-import com.synapse.core.activation.Activation;
-import com.synapse.core.activation.ActivationLogistic;
+import com.synapse.core.activation.*;
 import com.synapse.core.experimentation.ExperimentResult;
 import com.synapse.core.experimentation.Experimenter;
 import com.synapse.core.experimentation.ParallelExperimenter;
 import com.synapse.core.nets.NetParameters;
+import com.synapse.core.rates.ConstantRate;
+import com.synapse.core.rates.ExponentRate;
+import com.synapse.core.rates.LinearRate;
 import com.synapse.core.rates.Rate;
 import com.synapse.core.samples.FileSampleService;
 import com.synapse.core.samples.ListSampleService;
@@ -26,30 +28,28 @@ class TestExperiments {
     }
 
     public static void main(String[] args) throws IOException {
-        Path trainingFile = Path.of("cifar-10/samples", "data_batch_1.sample");
-        Path testingFile = Path.of("cifar-10/samples", "test_batch.sample");
-        Path resultFile = Path.of("cifar-10/experimentation", getNow() + "_result.exp.res");
+        String root = "C:\\Users\\User\\Desktop\\Михаил Ханов\\cifar-10";
+        Path trainingFile = Path.of(root, "samples", "data_batch_1.sample");
+        Path testingFile = Path.of(root, "samples", "test_batch.sample");
+        Path resultFile = Path.of(root, "experimentation", getNow() + "_result.exp.res");
 
         FileSampleService service = new FileSampleService();
-        service.setTrainingFile(1000, trainingFile.toFile());
-        service.setTestingFile(500, testingFile.toFile());
+        service.setTrainingFile(500, trainingFile.toFile());
+        service.setTestingFile(100, testingFile.toFile());
         ListSampleService sampleService = new ListSampleService(service);
 
         Experimenter experimenter = new ParallelExperimenter();
         experimenter.setSampleServices(sampleService);
-        experimenter.setRates(Rate.getDefault());
+        experimenter.setRates(new Rate[]{
+//                new ConstantRate(0.2), new ConstantRate(0.5), new ConstantRate(0.7),
+//                new LinearRate(0.2), new LinearRate(0.5), new LinearRate(0.7),
+                new ExponentRate(1.0, 0.2), new ExponentRate(1.0, 0.5), new ExponentRate(1.0, 0.7),
+        });
         experimenter.setErrorLimits(0.1);
         experimenter.setEpochCounts(10);
         experimenter.setBatchSizes(1);
-
-        NetParameters[] netParameters = new NetParameters[]{
-                new NetParameters(new int[]{3072, 5000, 5000, 10}, Activation.arrayOf(new ActivationLogistic(0.1), 3)),
-                new NetParameters(new int[]{3072, 5000, 5000, 10}, Activation.arrayOf(new ActivationLogistic(0.2), 3)),
-                new NetParameters(new int[]{3072, 5000, 5000, 10}, Activation.arrayOf(new ActivationLogistic(0.3), 3)),
-                new NetParameters(new int[]{3072, 5000, 5000, 10}, Activation.arrayOf(new ActivationLogistic(0.4), 3)),
-                new NetParameters(new int[]{3072, 5000, 5000, 10}, Activation.arrayOf(new ActivationLogistic(0.5), 3)),
-        };
-        experimenter.setNetParameters(netParameters);
+        experimenter.setActivations(Activation.arrayOf(Activation.getDefault(), 3));
+        experimenter.setLayerSizes(new int[]{3072, 5000, 5000, 10});
         ExperimentResult experimentResult = experimenter.call();
         experimentResult.getReport().forEach(System.out::print);
 
