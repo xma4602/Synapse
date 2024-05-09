@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox alignment="CENTER" prefHeight="130.0" prefWidth="622.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.synapse.desktop.controllers.NetStructureController">
+   <children>
+      <VBox prefHeight="321.0" prefWidth="158.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="18.0" prefWidth="368.0" text="Входной слой" textAlignment="CENTER" />
+            <TextField fx:id="inputLayerField" alignment="CENTER" text="1" />
+            <Label fx:id="inputLabel" alignment="TOP_CENTER" prefHeight="101.0" prefWidth="158.0" text="Ошибка ввода" textAlignment="CENTER" textFill="RED" wrapText="true" />
+         </children>
+         <HBox.margin>
+            <Insets bottom="10.0" left="10.0" top="10.0" />
+         </HBox.margin>
+      </VBox>
+      <VBox prefHeight="175.0" prefWidth="251.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="18.0" prefWidth="508.0" text="Скрытые слои" textAlignment="CENTER" />
+            <TextField fx:id="midLayerField" alignment="CENTER" text="100 100" />
+            <Label fx:id="midLabel" alignment="TOP_CENTER" prefHeight="62.0" prefWidth="368.0" text="Ошибка ввода" textAlignment="CENTER" textFill="RED" wrapText="true" />
+         </children>
+         <HBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </HBox.margin>
+      </VBox>
+      <VBox prefHeight="295.0" prefWidth="173.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="18.0" prefWidth="242.0" text="Выходной слой" textAlignment="CENTER" />
+            <TextField fx:id="outputLayerField" alignment="CENTER" prefWidth="163.0" text="1" />
+            <Label fx:id="outputLabel" alignment="TOP_CENTER" prefHeight="107.0" prefWidth="163.0" text="Ошибка ввода" textAlignment="CENTER" textFill="RED" wrapText="true" />
+         </children>
+         <HBox.margin>
+            <Insets bottom="10.0" right="10.0" top="10.0" />
+         </HBox.margin>
+      </VBox>
+   </children>
+</HBox>

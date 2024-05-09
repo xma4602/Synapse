@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="354.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.synapse.desktop.controllers.MainController">
+   <children>
+      <MenuBar>
+        <menus>
+          <Menu mnemonicParsing="false" text="Распознование">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Из файла" />
+                  <MenuItem mnemonicParsing="false" text="Из фотографии" />
+                  <MenuItem mnemonicParsing="false" text="Из камеры" />
+               </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Обучение сети">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#trainNewNet" text="Обучение новой сети" />
+                  <MenuItem mnemonicParsing="false" onAction="#trainingFromFile" text="Обучение по параметрам из файла" />
+                  <MenuItem mnemonicParsing="false" onAction="#openTrainingResult" text="Открыть результаты обучения" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <ImageView fx:id="mainImage" fitHeight="337.0" fitWidth="684.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/synapse-rectangle.jpg" />
+         </image>
+      </ImageView>
+   </children>
+</VBox>

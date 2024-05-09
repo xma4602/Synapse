@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.ToggleSwitch?>
+<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="688.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.synapse.desktop.controllers.RateController">
+   <children>
+      <LineChart fx:id="chart" animated="false" createSymbols="false" prefHeight="400.0" prefWidth="538.0" title="График скорости обучения">
+        <xAxis>
+          <NumberAxis label="Кол-во эпох" side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis label="Коэф. скорости" side="LEFT" />
+        </yAxis>
+         <HBox.margin>
+            <Insets bottom="10.0" left="10.0" top="10.0" />
+         </HBox.margin>
+      </LineChart>
+      <VBox prefHeight="385.0" prefWidth="141.0">
+         <children>
+            <Pane prefHeight="45.0" prefWidth="136.0" />
+            <VBox>
+               <children>
+                  <ToggleSwitch id="Постоянная" fx:id="constSwitch" alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" onMouseClicked="#switchButton" prefHeight="19.0" prefWidth="105.0" selected="true" text="Постоянная" />
+                  <Label text="Значение:" />
+                  <Spinner fx:id="constSpinner" editable="true" />
+                  <Label fx:id="constErrorLabel" text="Ошибка" textFill="RED" wrapText="true" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </VBox>
+            <VBox>
+               <children>
+                  <ToggleSwitch id="Линейная" fx:id="linearSwitch" alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" onMouseClicked="#switchButton" prefHeight="18.0" prefWidth="91.0" text="Линейная" />
+                  <Label text="Значение делителя:" />
+                  <Spinner fx:id="linearSpinner" editable="true" />
+                  <Label fx:id="linearErrorLabel" text="Ошибка" textFill="RED" wrapText="true" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </VBox>
+            <VBox>
+               <children>
+                  <ToggleSwitch id="Экспоненциальная" fx:id="expSwitch" alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" onMouseClicked="#switchButton" text="Экспоненциальная" />
+                  <Label text="Значение высоты:" />
+                  <Spinner fx:id="expSpinner1" editable="true" />
+                  <Label fx:id="expErrorLabel1" text="Ошибка" textFill="RED" wrapText="true" />
+                  <Label text="Значение кривизны:" />
+                  <Spinner fx:id="expSpinner2" editable="true" />
+                  <Label fx:id="expErrorLabel2" text="Ошибка" textFill="RED" wrapText="true" />
+               </children>
+            </VBox>
+         </children>
+         <HBox.margin>
+            <Insets bottom="10.0" right="10.0" top="10.0" />
+         </HBox.margin>
+      </VBox>
+   </children>
+</HBox>

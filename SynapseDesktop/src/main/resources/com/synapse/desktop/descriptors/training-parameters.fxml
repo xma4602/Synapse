@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.synapse.desktop.controllers.TrainingParametersController">
+   <center>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="135.0" prefWidth="162.0">
+         <children>
+            <Label prefHeight="18.0" prefWidth="339.0" text="Макс. количество эпох:" />
+            <Spinner fx:id="epochSpinner" editable="true" prefHeight="26.0" prefWidth="431.0" />
+            <Label prefHeight="18.0" prefWidth="213.0" text="Размер пакета:" />
+            <Spinner fx:id="batchSizeSpinner" editable="true" prefHeight="26.0" prefWidth="313.0" />
+            <Label prefHeight="18.0" prefWidth="469.0" text="Целевая мин. ошибка:" />
+            <Spinner fx:id="errorLimitSpinner" editable="true" prefHeight="26.0" prefWidth="340.0" />
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
