@@ -63,9 +63,9 @@ public class NetParameters implements Cloneable, Externalizable, Reportable {
     @Override
     public List<String> getReport() {
         return List.of(
-                "TrainingParameters:\n",
-                "\t• layerSizes=%s\n".formatted(Arrays.toString(layerSizes)),
-                "\t• activations=%s\n".formatted(Arrays.toString(activations))
+                "NetParameters:\n",
+                "\tlayerSizes=%s\n".formatted(Arrays.toString(layerSizes)),
+                "\tactivations=%s\n".formatted(Arrays.toString(activations))
                 );
     }
 }
