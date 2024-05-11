@@ -1,6 +1,8 @@
 package com.synapse.data.learning;
 
-import com.synapse.core.activation.*;
+import com.synapse.core.activation.Activation;
+import com.synapse.core.activation.ActivationAtan;
+import com.synapse.core.activation.ActivationLogistic;
 import com.synapse.core.experimentation.ExperimentResult;
 import com.synapse.core.experimentation.Experimenter;
 import com.synapse.core.experimentation.ParallelExperimenter;
@@ -16,7 +18,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-class TestExperiments {
+class TestActivations {
 
 
     static String getNow() {

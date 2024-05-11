@@ -128,9 +128,7 @@ public class TrainingPreparationController implements ItemController<ExperimentP
             root.getChildren().add(new TreeItem<>("Не все параметры введены корректно."));
         } else {
             ListSampleService item = (ListSampleService) controller.getItem();
-            root.getChildren().add(new TreeItem<>("Количество элементов: %d".formatted(item.getSamplesSize())));
-            root.getChildren().add(new TreeItem<>("Доля обучения: %f%% (%d элементов)".formatted(item.getTrainingRatio() * 100, item.getTrainingSize())));
-            root.getChildren().add(new TreeItem<>("Доля тестирования: %f%% (%d элементов)".formatted(item.getTestingRatio() * 100, item.getTestingSize())));
+            item.getReport().forEach(r -> root.getChildren().add(new TreeItem<>(r)));
         }
 
         return root;
@@ -243,7 +241,6 @@ public class TrainingPreparationController implements ItemController<ExperimentP
         parameters.setNetParameters(netParameters);
         parameters.setSampleService(sampleService);
         parameters.setTrainingParameters(trainingParameters);
-        parameters.setExperienceCount(EXPERIENCE_COUNT);
 
         return parameters;
     }

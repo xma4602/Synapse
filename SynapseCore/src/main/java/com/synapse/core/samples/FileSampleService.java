@@ -1,16 +1,21 @@
 package com.synapse.core.samples;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
 public class FileSampleService implements SampleService {
 
     private List<File> trainingFiles;
+    private int trainingItemsLimit;
     private List<File> testingFiles;
     private int testingItemsLimit;
-    private int trainingItemsLimit;
 
     @Override
     public List<String> getReport() {
