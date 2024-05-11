@@ -1,7 +1,5 @@
 package com.synapse.core.matrix;
 
-import com.synapse.core.tools.Reportable;
-
 import java.io.Externalizable;
 import java.util.function.DoubleFunction;
 import java.util.function.DoubleSupplier;
@@ -9,7 +7,7 @@ import java.util.function.DoubleSupplier;
 /**
  * Класс двумерного массива (матрицы) для алгебраических вычислений
  */
-public interface Matrix extends Cloneable, Iterable<Double>, Externalizable, Reportable {
+public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
 
     /**
      * Создает новую пустую матрицу с заданным количеством строк и столбцов
@@ -44,11 +42,11 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable, Rep
      *
      * @param rows    Количество строк матрицы
      * @param columns Количество столбцов матрицы
-     * @param matrix  Данные матрицы
+     * @param data    Данные матрицы
      * @throws IllegalArgumentException если количество ячеек матрицы не совпадает с количеством элементов массива
      */
-    static Matrix create(int rows, int columns, double... matrix){
-        return MatrixSettings.getMatrixClass().createInstance(rows, columns, matrix);
+    static Matrix create(int rows, int columns, double... data) {
+        return MatrixSettings.getMatrixClass().createInstance(rows, columns, data);
     }
 
     /**
@@ -58,8 +56,16 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable, Rep
      * @param columns     Количество столбцов матрицы
      * @param initializer Функция, поставляющая данные для матрицы
      */
-    static Matrix create(int rows, int columns, DoubleSupplier initializer){
-        return MatrixSettings.getMatrixClass().createInstance(rows, columns, initializer);
+    static Matrix create(int rows, int columns, DoubleSupplier initializer) {
+        double[] data = new double[rows * columns];
+        for (int i = 0; i < data.length; i++) {
+            data[i] = initializer.getAsDouble();
+        }
+        return MatrixSettings.getMatrixClass().createInstance(rows, columns, data);
+    }
+
+    static Matrix create(Matrix matrix) {
+        return create(matrix.getRowLength(), matrix.getColumnLength(), matrix.getArray());
     }
 
     /**
@@ -72,14 +78,6 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable, Rep
      */
     Matrix createInstance(int rows, int columns, double... matrix);
 
-    /**
-     * Создает новую матрицу с заданным количеством строк и столбцов, заполняя ее данными инициализатора
-     *
-     * @param rows        Количество строк матрицы
-     * @param columns     Количество столбцов матрицы
-     * @param initializer Функция, поставляющая данные для матрицы
-     */
-    Matrix createInstance(int rows, int columns, DoubleSupplier initializer);
 
     int getRowLength();
 
@@ -208,33 +206,33 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable, Rep
      * Обнуляет данные матриц, сохраняя структуру
      */
     void zeros();
-
-    /**
-     * Печатает матрицы в стандартный поток вывода
-     *
-     * @param matrices печатаемые матрицы
-     */
-    static void print(Matrix... matrices) {
-        String[][] strings = new String[matrices.length][];
-        int maxRow = 0;
-        for (int i = 0; i < matrices.length; i++) {
-            strings[i] = matrices[i].getReport().toArray(new String[0]);
-            if (strings[i].length > maxRow) {
-                maxRow = strings[i].length;
-            }
-        }
-
-        for (int row = 0; row < maxRow; row++) {
-            for (String[] string : strings) {
-                if (string.length > row) {
-                    System.out.print(string[row] + "  ");
-                } else {
-                    System.out.print(" ".repeat(string[0].length()) + "  ");
-                }
-            }
-            System.out.println();
-        }
-    }
+//
+//    /**
+//     * Печатает матрицы в стандартный поток вывода
+//     *
+//     * @param matrices печатаемые матрицы
+//     */
+//    static void print(Matrix... matrices) {
+//        String[][] strings = new String[matrices.length][];
+//        int maxRow = 0;
+//        for (int i = 0; i < matrices.length; i++) {
+//            strings[i] = matrices[i].getReport().toArray(new String[0]);
+//            if (strings[i].length > maxRow) {
+//                maxRow = strings[i].length;
+//            }
+//        }
+//
+//        for (int row = 0; row < maxRow; row++) {
+//            for (String[] string : strings) {
+//                if (string.length > row) {
+//                    System.out.print(string[row] + "  ");
+//                } else {
+//                    System.out.print(" ".repeat(string[0].length()) + "  ");
+//                }
+//            }
+//            System.out.println();
+//        }
+//    }
 
     Matrix clone();
 

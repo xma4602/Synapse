@@ -1,7 +1,7 @@
 package com.synapse.core.samples;
 
-import com.synapse.core.matrix.MatrixJava;
 import com.synapse.core.matrix.Matrix;
+import com.synapse.core.matrix.MatrixJava;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,16 +53,17 @@ public class Sample implements Externalizable {
 
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        Object o = in.readObject();
-        source = (MatrixJava) o;
-        Object o1 = in.readObject();
-        target = (MatrixJava) o1;
+        MatrixJava source = (MatrixJava) in.readObject();
+        MatrixJava target = (MatrixJava) in.readObject();
+
+        this.source = Matrix.create(source);
+        this.target = Matrix.create(target);
     }
 
     @Override
     public String toString() {
         return "Sample{" +
-                "source=" + source+
+                "source=" + source +
                 ", target=" + target +
                 '}';
     }

@@ -50,6 +50,12 @@
             <version>2.0.12</version>
             <scope>compile</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.ejml/ejml-simple -->
+        <dependency>
+            <groupId>org.ejml</groupId>
+            <artifactId>ejml-simple</artifactId>
+            <version>0.43</version>
+        </dependency>
     </dependencies>
 
     <build>

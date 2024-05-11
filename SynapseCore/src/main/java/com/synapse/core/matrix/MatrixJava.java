@@ -9,7 +9,6 @@ import java.io.ObjectOutput;
 import java.io.Serial;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.function.DoubleFunction;
 import java.util.function.DoubleSupplier;
 
@@ -58,23 +57,6 @@ public class MatrixJava implements Matrix {
     }
 
     /**
-     * Создает новую пустую матрицу-вектор с одной строкой и заданным количеством столбцов
-     *
-     * @param columns Количество столбцов матрицы
-     */
-    public MatrixJava(int columns) {
-        this(1, columns);
-    }
-
-    public MatrixJava(int columns, double... matrix) {
-        this(1, columns, matrix);
-    }
-
-    public MatrixJava(double... matrix) {
-        this(1, matrix.length, matrix);
-    }
-
-    /**
      * Создает новую матрицу с заданным количеством строк и столбцов с данными из массива
      *
      * @param rows    Количество строк матрицы
@@ -109,11 +91,6 @@ public class MatrixJava implements Matrix {
     @Override
     public Matrix createInstance(int rows, int columns, double... matrix) {
         return new MatrixJava(rows, columns, matrix);
-    }
-
-    @Override
-    public Matrix createInstance(int rows, int columns, DoubleSupplier initializer) {
-        return new MatrixJava(rows, columns, initializer);
     }
 
     @Override
@@ -442,8 +419,4 @@ public class MatrixJava implements Matrix {
         }
     }
 
-    @Override
-    public List<String> getReport() {
-        return null;
-    }
 }
