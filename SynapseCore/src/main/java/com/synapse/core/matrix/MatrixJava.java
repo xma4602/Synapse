@@ -272,6 +272,18 @@ public class MatrixJava implements Matrix {
         return new MatrixJava(rowLength, columnLength, result);
     }
 
+    @Override
+    public Matrix scaleAdd(double scale, Matrix matrix) {
+        rowsMismatch(this, matrix);
+        columnsMismatch(this, matrix);
+
+        double[] result = new double[array.length];
+        for (int i = 0; i < array.length; i++)
+            result[i] = array[i] + scale * matrix.getArray()[i];
+
+        return new MatrixJava(rowLength, columnLength, result);
+    }
+
     /**
      * Отображает матрицу в матрицу такой же размерности по правилу функции отображения.
      *

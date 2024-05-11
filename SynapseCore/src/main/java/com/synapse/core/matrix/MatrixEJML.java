@@ -98,6 +98,12 @@ public class MatrixEJML implements Matrix {
     }
 
     @Override
+    public Matrix scaleAdd(double scale, Matrix matrix) {
+        MatrixEJML matr = (MatrixEJML) matrix;
+        return new MatrixEJML(simpleMatrix.plus(scale, matr.simpleMatrix));
+    }
+
+    @Override
     public Matrix apply(DoubleFunction<Double> function) {
 
         var matrix = simpleMatrix.copy().getDDRM();

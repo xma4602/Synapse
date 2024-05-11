@@ -178,8 +178,10 @@ public class SimpleTeacher extends Teacher {
         Matrix[] biases = net.getBiases();
 
         for (int i = 0; i < net.getInterLayersCount(); i++) {
-            weights[i] = weights[i].add(dw[i].scale(-rate));
-            biases[i] = biases[i].add(db[i].scale(-rate));
+            weights[i] = weights[i].scaleAdd(-rate, dw[i]);
+            biases[i] = biases[i].scaleAdd(-rate, db[i]);
+//            weights[i] = weights[i].add(dw[i].scale(-rate));
+//            biases[i] = biases[i].add(db[i].scale(-rate));
         }
     }
 

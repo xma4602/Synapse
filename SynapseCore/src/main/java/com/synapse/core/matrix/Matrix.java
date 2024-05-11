@@ -159,6 +159,9 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
      */
     Matrix scale(double n);
 
+    Matrix scaleAdd(double scale, Matrix matrix);
+
+
     /**
      * Отображает матрицу в матрицу такой же размерности по правилу функции отображения.
      *
@@ -241,4 +244,5 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
             matrix.zeros();
         }
     }
+
 }
