@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
@@ -17,9 +18,12 @@ import java.util.concurrent.Executors;
 public class ConvertFromCifar10BinToSamples {
 
     public static final int N_THREADS = 50;
+    static String root = "C:\\Users\\xma4602\\Documents\\ВУЗ\\Диплом\\программа\\datasets\\cifar-10";
+    static Path bin = Path.of(root, "bin");
+    static Path samples = Path.of(root, "samples");
 
     public static void main(String[] args) throws InterruptedException {
-        File[] files = Path.of(".","cifar-10", "bin").toFile().listFiles();
+        File[] files = bin.toFile().listFiles();
         assert files != null;
 
         List<Callable<File>> tasks = Arrays.stream(files)
@@ -43,15 +47,15 @@ public class ConvertFromCifar10BinToSamples {
             }
             return sampleFile;
         } catch (IOException e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
 
     }
 
-    private static File getSampleFile(File file) {
+    private static File getSampleFile(File file) throws IOException {
         String name = file.getName().split("\\.")[0];
-        Path path = Path.of("cifar-10", "samples", name + ".sample");
-        return new File(path.toUri());
+        Path path = Path.of(samples.toString(), name + ".sample");
+        if (Files.notExists(path)) Files.createFile(path);
+        return path.toFile();
     }
 }

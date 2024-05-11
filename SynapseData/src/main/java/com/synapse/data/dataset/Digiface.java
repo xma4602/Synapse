@@ -1,6 +1,6 @@
 package com.synapse.data.dataset;
 
-import com.synapse.core.nets.Matrix;
+import com.synapse.core.matrix.Matrix;
 import com.synapse.core.samples.Sample;
 import com.synapse.data.converters.BufferedImageInputStream;
 import com.synapse.data.converters.ImageService;
@@ -14,7 +14,7 @@ public class Digiface {
             Matrix source = ImageService.convertRGB(in.readImage(), false);
             double[] doubles = new double[targetSize];
             doubles[targetIndex] = 1;
-            Matrix target = new Matrix(doubles);
+            Matrix target = Matrix.create(doubles);
             return new Sample(source, target);
         } catch (Exception e) {
             throw new IOException(e);

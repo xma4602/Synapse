@@ -1,6 +1,7 @@
 package com.synapse.core.nets;
 
 import com.synapse.core.activation.Activation;
+import com.synapse.core.matrix.Matrix;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,7 @@ class NetTest {
 
     @Test
     void pass() {
-        Matrix matrix = new Matrix(layers[0]);
+        Matrix matrix = Matrix.create(layers[0]);
         Matrix result = net.pass(matrix);
     }
 }

@@ -1,6 +1,6 @@
 package com.synapse.data.dataset;
 
-import com.synapse.core.nets.Matrix;
+import com.synapse.core.matrix.Matrix;
 import com.synapse.core.samples.Sample;
 import lombok.SneakyThrows;
 
@@ -36,7 +36,7 @@ public class Cifar10 {
                 double[] doubles = new double[10];
                 int index = in.read();
                 doubles[index] = 1;
-                return new Matrix(doubles);
+                return Matrix.create(doubles);
             }
 
             private Matrix nextSource() throws IOException {
@@ -47,7 +47,7 @@ public class Cifar10 {
                     doubles[i + 1] = getUnsignedDouble(bytes[i + 1024]);
                     doubles[i + 2] = getUnsignedDouble(bytes[i + 2048]);
                 }
-                return new Matrix(doubles);
+                return Matrix.create(doubles);
             }
 
             private static double getUnsignedDouble(byte value) {

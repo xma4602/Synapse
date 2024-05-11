@@ -1,13 +1,15 @@
-package com.synapse.core.nets;
+package com.synapse.core.matrix;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.SneakyThrows;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.function.DoubleFunction;
 import java.util.function.DoubleSupplier;
 
@@ -16,7 +18,7 @@ import java.util.function.DoubleSupplier;
  */
 @EqualsAndHashCode
 @NoArgsConstructor
-public class Matrix implements Cloneable, Iterable<Double>, Externalizable {
+public class MatrixJava implements Matrix {
 
     @Serial
     private static final long serialVersionUID = 5679755609199712210L;
@@ -28,12 +30,11 @@ public class Matrix implements Cloneable, Iterable<Double>, Externalizable {
     /**
      * Количество строк матрицы
      */
-    @Getter
     private int rowLength;
+
     /**
      * Количество столбцов матрицы
      */
-    @Getter
     private int columnLength;
 
     /**
@@ -43,7 +44,7 @@ public class Matrix implements Cloneable, Iterable<Double>, Externalizable {
      * @param columns Количество столбцов матрицы
      * @throws IllegalArgumentException если количество строк и/или столбцов не натуральное число
      */
-    public Matrix(int rows, int columns) {
+    public MatrixJava(int rows, int columns) {
         if (rows <= 0) {
             throw new IllegalArgumentException("Количество строк матрицы должно было быть натуральным числом, а было " + rows);
         }
@@ -61,15 +62,15 @@ public class Matrix implements Cloneable, Iterable<Double>, Externalizable {
      *
      * @param columns Количество столбцов матрицы
      */
-    public Matrix(int columns) {
+    public MatrixJava(int columns) {
         this(1, columns);
     }
 
-    public Matrix(int columns, double... matrix) {
+    public MatrixJava(int columns, double... matrix) {
         this(1, columns, matrix);
     }
 
-    public Matrix(double... matrix) {
+    public MatrixJava(double... matrix) {
         this(1, matrix.length, matrix);
     }
 
@@ -81,7 +82,7 @@ public class Matrix implements Cloneable, Iterable<Double>, Externalizable {
      * @param matrix  Данные матрицы
      * @throws IllegalArgumentException если количество ячеек матрицы не совпадает с количеством элементов массива
      */
-    public Matrix(int rows, int columns, double... matrix) {
+    public MatrixJava(int rows, int columns, double... matrix) {
         this(rows, columns);
         if (rows * columns != matrix.length)
             throw new IllegalArgumentException(
@@ -97,12 +98,32 @@ public class Matrix implements Cloneable, Iterable<Double>, Externalizable {
      * @param columns     Количество столбцов матрицы
      * @param initializer Функция, поставляющая данные для матрицы
      */
-    public Matrix(int rows, int columns, DoubleSupplier initializer) {
+    public MatrixJava(int rows, int columns, DoubleSupplier initializer) {
         this(rows, columns);
 
         for (int i = 0; i < array.length; i++) {
             array[i] = initializer.getAsDouble();
         }
+    }
+
+    @Override
+    public Matrix createInstance(int rows, int columns, double... matrix) {
+        return new MatrixJava(rows, columns, matrix);
+    }
+
+    @Override
+    public Matrix createInstance(int rows, int columns, DoubleSupplier initializer) {
+        return new MatrixJava(rows, columns, initializer);
+    }
+
+    @Override
+    public int getRowLength() {
+        return rowLength;
+    }
+
+    @Override
+    public int getColumnLength() {
+        return columnLength;
     }
 
     /**
@@ -148,9 +169,9 @@ public class Matrix implements Cloneable, Iterable<Double>, Externalizable {
 
         double[] result = new double[array.length];
         for (int i = 0; i < array.length; i++)
-            result[i] = array[i] + m.array[i];
+            result[i] = array[i] + m.getArray()[i];
 
-        return new Matrix(rowLength, columnLength, result);
+        return new MatrixJava(rowLength, columnLength, result);
     }
 
     /**
@@ -167,9 +188,9 @@ public class Matrix implements Cloneable, Iterable<Double>, Externalizable {
 
         double[] result = new double[array.length];
         for (int i = 0; i < array.length; i++)
-            result[i] = array[i] - m.array[i];
+            result[i] = array[i] - m.getArray()[i];
 
-        return new Matrix(rowLength, columnLength, result);
+        return new MatrixJava(rowLength, columnLength, result);
     }
 
     /**
@@ -186,9 +207,9 @@ public class Matrix implements Cloneable, Iterable<Double>, Externalizable {
 
         double[] result = new double[array.length];
         for (int i = 0; i < array.length; i++)
-            result[i] = array[i] * m.array[i];
+            result[i] = array[i] * m.getArray()[i];
 
-        return new Matrix(rowLength, columnLength, result);
+        return new MatrixJava(rowLength, columnLength, result);
     }
 
     /**
@@ -201,48 +222,48 @@ public class Matrix implements Cloneable, Iterable<Double>, Externalizable {
     public Matrix mul(Matrix m) {
         rowsColumnsMismatch(this, m);
 
-        double[] result = new double[rowLength * m.columnLength];
+        double[] result = new double[rowLength * m.getColumnLength()];
         for (int i = 0; i < rowLength; i++) {
-            for (int j = 0; j < m.columnLength; j++) {
+            for (int j = 0; j < m.getColumnLength(); j++) {
                 for (int k = 0; k < columnLength; k++) {
-                    result[i * m.columnLength + j] += array[i * columnLength + k] * m.array[k * m.columnLength + j];
+                    result[i * m.getColumnLength() + j] += array[i * columnLength + k] * m.getArray()[k * m.getColumnLength() + j];
                 }
             }
         }
 
-        return new Matrix(rowLength, m.columnLength, result);
+        return new MatrixJava(rowLength, m.getColumnLength(), result);
     }
 
     public Matrix tMul(Matrix m) {
         rowsMismatch(this, m);
 
-        double[] result = new double[columnLength * m.columnLength];
+        double[] result = new double[columnLength * m.getColumnLength()];
 
         for (int i = 0; i < columnLength; i++)
-            for (int j = 0; j < m.columnLength; j++)
+            for (int j = 0; j < m.getColumnLength(); j++)
                 for (int k = 0; k < rowLength; k++) {
                     double a = array[k * columnLength + i];
-                    double b = m.array[k * m.columnLength + j];
-                    result[i * m.columnLength + j] += a * b;
+                    double b = m.getArray()[k * m.getColumnLength() + j];
+                    result[i * m.getColumnLength() + j] += a * b;
                 }
 
-        return new Matrix(columnLength, m.columnLength, result);
+        return new MatrixJava(columnLength, m.getColumnLength(), result);
     }
 
     public Matrix mulT(Matrix m) {
         columnsMismatch(this, m);
 
-        double[] result = new double[rowLength * m.rowLength];
+        double[] result = new double[rowLength * m.getRowLength()];
 
         for (int i = 0; i < rowLength; i++)
-            for (int j = 0; j < m.rowLength; j++)
+            for (int j = 0; j < m.getRowLength(); j++)
                 for (int k = 0; k < columnLength; k++) {
                     double a = array[i * columnLength + k];
-                    double b = m.array[j * m.columnLength + k];
-                    result[i * m.rowLength + j] += a * b;
+                    double b = m.getArray()[j * m.getColumnLength() + k];
+                    result[i * m.getRowLength() + j] += a * b;
                 }
 
-        return new Matrix(rowLength, m.rowLength, result);
+        return new MatrixJava(rowLength, m.getRowLength(), result);
     }
 
     /**
@@ -257,8 +278,9 @@ public class Matrix implements Cloneable, Iterable<Double>, Externalizable {
             for (int j = 0; j < columnLength; j++)
                 result[j * rowLength + i] = array[i * columnLength + j];
 
-        return new Matrix(columnLength, rowLength, result);
+        return new MatrixJava(columnLength, rowLength, result);
     }
+
     /**
      * Масштабирует матрицу
      *
@@ -270,7 +292,7 @@ public class Matrix implements Cloneable, Iterable<Double>, Externalizable {
         for (int i = 0; i < array.length; i++)
             result[i] = array[i] * n;
 
-        return new Matrix(rowLength, columnLength, result);
+        return new MatrixJava(rowLength, columnLength, result);
     }
 
     /**
@@ -284,7 +306,7 @@ public class Matrix implements Cloneable, Iterable<Double>, Externalizable {
         for (int i = 0; i < array.length; i++)
             result[i] = function.apply(array[i]);
 
-        return new Matrix(rowLength, columnLength, result);
+        return new MatrixJava(rowLength, columnLength, result);
     }
 
     /**
@@ -318,6 +340,7 @@ public class Matrix implements Cloneable, Iterable<Double>, Externalizable {
 
     /**
      * Вычисляет сумму квадратов элементов матрицы
+     *
      * @return Сумма квадратов элементов матрицы
      */
     public double sqrsSum() {
@@ -335,40 +358,9 @@ public class Matrix implements Cloneable, Iterable<Double>, Externalizable {
         return sum() / array.length;
     }
 
-    /**
-     * Обнуляет данные матриц, сохраняя структуру
-     *
-     * @param matrices Обнуляемые матрицы
-     */
-    public static void zeros(Matrix... matrices) {
-        for (Matrix m : matrices) Arrays.fill(m.array, 0.0);
-    }
-
-    /**
-     * Печатает матрицы в стандартный поток вывода
-     *
-     * @param matrices печатаемые матрицы
-     */
-    public static void print(Matrix... matrices) {
-        String[][] strings = new String[matrices.length][];
-        int maxRow = 0;
-        for (int i = 0; i < matrices.length; i++) {
-            strings[i] = matrices[i].toStringsByRows();
-            if (strings[i].length > maxRow) {
-                maxRow = strings[i].length;
-            }
-        }
-
-        for (int row = 0; row < maxRow; row++) {
-            for (String[] string : strings) {
-                if (string.length > row) {
-                    System.out.print(string[row] + "  ");
-                } else {
-                    System.out.print(" ".repeat(string[0].length()) + "  ");
-                }
-            }
-            System.out.println();
-        }
+    @Override
+    public void zeros() {
+        Arrays.fill(array, 0.0);
     }
 
     /**
@@ -397,22 +389,13 @@ public class Matrix implements Cloneable, Iterable<Double>, Externalizable {
      *
      * @return Независимая копия матрицы
      */
-    @SneakyThrows
     @Override
-    public Matrix clone() {
-        Matrix clone = (Matrix) super.clone();
-        clone.rowLength = rowLength;
-        clone.columnLength = columnLength;
-        clone.array = Arrays.copyOf(array, array.length);
-        return clone;
+    public MatrixJava clone() {
+        return new MatrixJava(rowLength, columnLength, Arrays.copyOf(array, array.length));
     }
 
     @Override
     public String toString() {
-        return "Matrix{%dx%d, data=%s}".formatted(rowLength, columnLength, Arrays.toString(array));
-    }
-
-    public String summary() {
         return "Matrix{%dx%d}".formatted(rowLength, columnLength);
     }
 
@@ -422,22 +405,22 @@ public class Matrix implements Cloneable, Iterable<Double>, Externalizable {
     }
 
     private void columnsMismatch(Matrix left, Matrix right) {
-        if (left.columnLength != right.columnLength)
+        if (left.getColumnLength() != right.getColumnLength())
             throw new ArithmeticException("Не совпадает количество столбцов: %s и %s"
-                    .formatted(left.columnLength, right.columnLength));
+                    .formatted(left.getColumnLength(), right.getColumnLength()));
     }
 
     private void rowsMismatch(Matrix left, Matrix right) {
-        if (left.rowLength != right.rowLength)
+        if (left.getRowLength() != right.getRowLength())
 
             throw new ArithmeticException("Не совпадает количество строк: %s и %s"
-                    .formatted(left.rowLength, right.rowLength));
+                    .formatted(left.getRowLength(), right.getRowLength()));
     }
 
     private void rowsColumnsMismatch(Matrix left, Matrix right) {
-        if (left.columnLength != right.rowLength)
+        if (left.getColumnLength() != right.getRowLength())
             throw new ArithmeticException("Не совпадает количество столбцов левой матрицы и строк правой матрицы: %s и %s"
-                    .formatted(left.columnLength, right.rowLength));
+                    .formatted(left.getColumnLength(), right.getRowLength()));
     }
 
     @Override
@@ -457,5 +440,10 @@ public class Matrix implements Cloneable, Iterable<Double>, Externalizable {
         for (int i = 0; i < array.length; i++) {
             array[i] = in.readDouble();
         }
+    }
+
+    @Override
+    public List<String> getReport() {
+        return null;
     }
 }

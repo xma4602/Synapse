@@ -1,6 +1,6 @@
 package com.synapse.data.converters;
 
-import com.synapse.core.nets.Matrix;
+import com.synapse.core.matrix.Matrix;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
@@ -8,7 +8,7 @@ import java.awt.image.DataBufferByte;
 public class ImageService {
 
     public static Matrix convertRGB(BufferedImage source, boolean withAlphaChannel) {
-        return new Matrix(ImageService.getArrayRGB_withoutAlpha(source, withAlphaChannel));
+        return Matrix.create(ImageService.getArrayRGB_withoutAlpha(source, withAlphaChannel));
     }
 
     private static double[] getArrayRGB_withoutAlpha(BufferedImage image, boolean withAlphaChannel) {

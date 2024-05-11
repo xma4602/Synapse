@@ -1,5 +1,6 @@
 package com.synapse.core.nets;
 
+import com.synapse.core.matrix.Matrix;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,9 +27,9 @@ class MatrixTest {
         array2 = new double[]{6, 5, 4, 3, 2, 1};
         array3 = new double[]{1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3};
 
-        matrix1 = new Matrix(row1, col1, array1);
-        matrix2 = new Matrix(row2, col2, array2);
-        matrix3 = new Matrix(row3, col3, array3);
+        matrix1 = Matrix.create(row1, col1, array1);
+        matrix2 = Matrix.create(row2, col2, array2);
+        matrix3 = Matrix.create(row3, col3, array3);
     }
 
     @Test

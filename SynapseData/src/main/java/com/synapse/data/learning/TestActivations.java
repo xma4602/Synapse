@@ -26,9 +26,10 @@ class TestActivations {
     }
 
     public static void main(String[] args) throws IOException {
-        Path trainingFile = Path.of("cifar-10/samples", "data_batch_1.sample");
-        Path testingFile = Path.of("cifar-10/samples", "test_batch.sample");
-        Path resultFile = Path.of("cifar-10/experimentation", getNow() + "_result.exp.res");
+        String root = "C:\\Users\\xma4602\\Documents\\ВУЗ\\Диплом\\программа\\datasets\\cifar-10";
+        Path trainingFile = Path.of(root, "samples", "data_batch_1.sample");
+        Path testingFile = Path.of(root, "samples", "test_batch.sample");
+        Path resultFile = Path.of(root, "experimentation", getNow() + "_result.exp.res");
 
         FileSampleService sampleService = new FileSampleService(
                 List.of(trainingFile.toFile()), 500, List.of(testingFile.toFile()), 250

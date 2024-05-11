@@ -1,6 +1,6 @@
 package com.synapse.core.samples;
 
-import com.synapse.core.nets.Matrix;
+import com.synapse.core.matrix.Matrix;
 import lombok.RequiredArgsConstructor;
 
 import java.util.LinkedList;
@@ -17,8 +17,8 @@ public class SingleParametrizedFunctionSampleGenerator implements SampleGenerato
         List<Sample> samples = new LinkedList<>();
         for (var x : data) {
             samples.add(new Sample(
-                    new Matrix(1, 1, new double[]{x}),
-                    new Matrix(1, 1, new double[]{function.apply(x)})
+                    Matrix.create(1, 1, x),
+                    Matrix.create(1, 1, function.apply(x))
             ));
         }
         return samples;

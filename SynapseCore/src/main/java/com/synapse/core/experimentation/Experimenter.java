@@ -12,6 +12,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+@SuppressWarnings("ALL")
 public abstract class Experimenter implements Callable<ExperimentResult>, Monitored {
 
     @Getter

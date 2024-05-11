@@ -1,6 +1,7 @@
 package com.synapse.core.nets;
 
 import com.synapse.core.activation.Activation;
+import com.synapse.core.matrix.Matrix;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -36,8 +37,8 @@ public class Net implements Cloneable, Externalizable {
         this.activations = activations;
 
         for (int i = 0; i < weights.length; i++) {
-            weights[i] = new Matrix(layerSizes[i], layerSizes[i + 1], DEFAULT_INITIALIZER);
-            biases[i] = new Matrix(1, layerSizes[i + 1], DEFAULT_INITIALIZER);
+            weights[i] = Matrix.create(layerSizes[i], layerSizes[i + 1], DEFAULT_INITIALIZER);
+            biases[i] = Matrix.create(1, layerSizes[i + 1], DEFAULT_INITIALIZER);
         }
     }
 

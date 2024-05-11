@@ -1,6 +1,6 @@
 package com.synapse.core.training;
 
-import com.synapse.core.nets.Matrix;
+import com.synapse.core.matrix.Matrix;
 import com.synapse.core.nets.Net;
 import com.synapse.core.samples.Sample;
 import lombok.Getter;
