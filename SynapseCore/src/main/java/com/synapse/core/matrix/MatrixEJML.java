@@ -1,5 +1,6 @@
 package com.synapse.core.matrix;
 
+import lombok.NoArgsConstructor;
 import org.ejml.simple.SimpleMatrix;
 
 import java.io.IOException;
@@ -9,13 +10,10 @@ import java.util.Iterator;
 import java.util.function.DoubleFunction;
 
 
+@NoArgsConstructor
 public class MatrixEJML implements Matrix {
 
     private SimpleMatrix simpleMatrix;
-
-    public MatrixEJML() {
-        simpleMatrix = null;
-    }
 
     public MatrixEJML(SimpleMatrix simpleMatrix) {
         this.simpleMatrix = simpleMatrix;
@@ -93,8 +91,8 @@ public class MatrixEJML implements Matrix {
     }
 
     @Override
-    public Matrix scale(double n) {
-        return new MatrixEJML(simpleMatrix.scale(n));
+    public Matrix scale(double scalar) {
+        return new MatrixEJML(simpleMatrix.scale(scalar));
     }
 
     @Override
@@ -119,7 +117,7 @@ public class MatrixEJML implements Matrix {
     }
 
     @Override
-    public double norm() {
+    public double norm2() {
         return simpleMatrix.normF();
     }
 

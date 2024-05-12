@@ -181,10 +181,10 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
     /**
      * Масштабирует матрицу
      *
-     * @param n Коэффициент масштабирования
+     * @param scalar Коэффициент масштабирования
      * @return Матрица, каждый элемент которой умножен на коэффициент масштабирования
      */
-    Matrix scale(double n);
+    Matrix scale(double scalar);
 
     /**
      * Производит поэлементное сложение матриц с предварительным масштабированием второй матрицы-множителя
@@ -214,7 +214,7 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
      *
      * @return Норма второго порядка матрицы
      */
-    double norm();
+    double norm2();
 
     /**
      * Вычисляет сумму элементов матрицы
@@ -248,7 +248,6 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
         }
     }
     Matrix clone();
-
 
 //
 //    /**

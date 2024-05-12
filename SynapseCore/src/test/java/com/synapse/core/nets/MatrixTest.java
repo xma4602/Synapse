@@ -157,7 +157,7 @@ class MatrixTest {
         }
         norm = Math.sqrt(norm);
 
-        assertEquals(norm, matrix1.norm());
+        assertEquals(norm, matrix1.norm2());
 
     }
 

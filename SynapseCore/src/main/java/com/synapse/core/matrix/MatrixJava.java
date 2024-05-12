@@ -261,13 +261,13 @@ public class MatrixJava implements Matrix {
     /**
      * Масштабирует матрицу
      *
-     * @param n Коэффициент масштабирования
+     * @param scalar Коэффициент масштабирования
      * @return Матрица, каждый элемент которой умножен на коэффициент масштабирования
      */
-    public Matrix scale(double n) {
+    public Matrix scale(double scalar) {
         double[] result = new double[array.length];
         for (int i = 0; i < array.length; i++)
-            result[i] = array[i] * n;
+            result[i] = array[i] * scalar;
 
         return new MatrixJava(rowLength, columnLength, result);
     }
@@ -304,7 +304,7 @@ public class MatrixJava implements Matrix {
      * @return Матрица у которой все элементы находятся в диапазоне [0, 1)
      */
     public Matrix normalize() {
-        return scale(1 / norm());
+        return scale(1 / norm2());
     }
 
     /**
@@ -312,7 +312,7 @@ public class MatrixJava implements Matrix {
      *
      * @return Норма второго порядка матрицы
      */
-    public double norm() {
+    public double norm2() {
         return Math.sqrt(sqrsSum());
     }
 
