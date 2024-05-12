@@ -37,8 +37,11 @@
             <artifactId>ejml-simple</artifactId>
             <version>0.43</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>org.ujmp</groupId>
+            <artifactId>ujmp-core</artifactId>
+            <version>0.3.0</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
         <dependency>
