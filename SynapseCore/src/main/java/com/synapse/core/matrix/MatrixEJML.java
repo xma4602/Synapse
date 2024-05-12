@@ -88,7 +88,7 @@ public class MatrixEJML implements Matrix {
     }
 
     @Override
-    public Matrix T() {
+    public Matrix Trans() {
         return new MatrixEJML(simpleMatrix.transpose());
     }
 

@@ -91,17 +91,17 @@ class MatrixTest {
 
     @Test
     void tMul() {
-        assertEquals(matrix1.mul(matrix2), matrix1.T().tMul(matrix2));
+        assertEquals(matrix1.mul(matrix2), matrix1.Trans().tMul(matrix2));
     }
 
     @Test
     void mulT() {
-        assertEquals(matrix1.mul(matrix3.T()), matrix1.mulT(matrix3));
+        assertEquals(matrix1.mul(matrix3.Trans()), matrix1.mulT(matrix3));
     }
 
     @Test
     void T() {
-        Matrix result = matrix1.T();
+        Matrix result = matrix1.Trans();
         for (int i = 0; i < result.getRowLength(); i++) {
             for (int j = 0; j < result.getColumnLength(); j++) {
                 assertEquals(result.getItem(i, j), matrix1.getItem(j, i));

@@ -249,7 +249,7 @@ public class MatrixJava implements Matrix {
      * @return Матрица, у которой количество строк и столбцов равно
      * количеству столбцов и строк исходной матрицы
      */
-    public Matrix T() {
+    public Matrix Trans() {
         double[] result = new double[array.length];
         for (int i = 0; i < rowLength; i++)
             for (int j = 0; j < columnLength; j++)

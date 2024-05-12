@@ -103,45 +103,45 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
     /**
      * Производит поэлементное сложение матриц.
      *
-     * @param m Матрица-слагаемое
+     * @param matrix Матрица-слагаемое
      * @return Сумма матриц
      * @throws ArithmeticException если у матриц не совпадает количество строк
      * @throws ArithmeticException если у матриц не совпадает количество столбцов
      */
-    Matrix add(Matrix m);
+    Matrix add(Matrix matrix);
 
     /**
      * Производит поэлементное вычитание матриц.
      *
-     * @param m Матрица-вычитаемое
+     * @param matrix Матрица-вычитаемое
      * @return Разница матриц
      * @throws ArithmeticException если у матриц не совпадает количество строк
      * @throws ArithmeticException если у матриц не совпадает количество столбцов
      */
-    Matrix sub(Matrix m);
+    Matrix sub(Matrix matrix);
 
     /**
      * Производит поэлементное умножение матриц.
      *
-     * @param m Матрица-множитель
+     * @param matrix Матрица-множитель
      * @return Поэлементное произведение матриц
      * @throws ArithmeticException если у матриц не совпадает количество строк
      * @throws ArithmeticException если у матриц не совпадает количество столбцов
      */
-    Matrix prod(Matrix m);
+    Matrix prod(Matrix matrix);
 
     /**
      * Производит матричное умножение матриц.
      *
-     * @param m Матрица-множитель
+     * @param matrix Матрица-множитель
      * @return Матричное произведение матриц
      * @throws ArithmeticException если количество столбцов левой матрицы не совпадает с количеством столбцов правой матрицы.
      */
-    Matrix mul(Matrix m);
+    Matrix mul(Matrix matrix);
 
-    Matrix tMul(Matrix m);
+    Matrix tMul(Matrix matrix);
 
-    Matrix mulT(Matrix m);
+    Matrix mulT(Matrix matrix);
 
     /**
      * Транспонирует матрицу
@@ -149,7 +149,7 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
      * @return Матрица, у которой количество строк и столбцов равно
      * количеству столбцов и строк исходной матрицы
      */
-    Matrix T();
+    Matrix Trans();
 
     /**
      * Масштабирует матрицу
