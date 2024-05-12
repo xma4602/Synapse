@@ -31,12 +31,12 @@ public class MatrixEJML implements Matrix {
     }
 
     @Override
-    public int getRowLength() {
+    public int getRowsNumber() {
         return simpleMatrix.getMatrix().getNumRows();
     }
 
     @Override
-    public int getColumnLength() {
+    public int getColumnsNumber() {
         return simpleMatrix.getMatrix().getNumCols();
     }
 

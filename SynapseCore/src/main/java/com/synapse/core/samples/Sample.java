@@ -26,11 +26,11 @@ public class Sample implements Externalizable {
     }
 
     public Sample(Matrix source, Matrix target) {
-        if (source.getRowLength() != 1) {
-            throw new IllegalArgumentException("Source matrix row length don't equal one and was " + source.getRowLength());
+        if (source.getRowsNumber() != 1) {
+            throw new IllegalArgumentException("Source matrix row length don't equal one and was " + source.getRowsNumber());
         }
-        if (target.getRowLength() != 1) {
-            throw new IllegalArgumentException("Target matrix row length don't equal one and was " + target.getRowLength());
+        if (target.getRowsNumber() != 1) {
+            throw new IllegalArgumentException("Target matrix row length don't equal one and was " + target.getRowsNumber());
         }
 
         this.source = source;
@@ -38,11 +38,11 @@ public class Sample implements Externalizable {
     }
 
     public int getSourceSize() {
-        return source.getColumnLength();
+        return source.getColumnsNumber();
     }
 
     public int getTargetSize() {
-        return target.getColumnLength();
+        return target.getColumnsNumber();
     }
 
     @Override
@@ -56,8 +56,8 @@ public class Sample implements Externalizable {
         MatrixJava source = (MatrixJava) in.readObject();
         MatrixJava target = (MatrixJava) in.readObject();
 
-        this.source = Matrix.create(source);
-        this.target = Matrix.create(target);
+        this.source = Matrix.translate(source);
+        this.target = Matrix.translate(target);
     }
 
     @Override

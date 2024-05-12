@@ -130,9 +130,9 @@ public class Net implements Cloneable, Externalizable {
 
     public int[] getLayersSizes() {
         int[] sizes = new int[getLayersCount()];
-        sizes[0] = weights[0].getRowLength();
+        sizes[0] = weights[0].getRowsNumber();
         for (int i = 0; i < weights.length; i++) {
-            sizes[i + 1] = weights[i].getColumnLength();
+            sizes[i + 1] = weights[i].getColumnsNumber();
         }
         return sizes;
     }

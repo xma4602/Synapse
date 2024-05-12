@@ -94,12 +94,12 @@ public class MatrixJava implements Matrix {
     }
 
     @Override
-    public int getRowLength() {
+    public int getRowsNumber() {
         return rowLength;
     }
 
     @Override
-    public int getColumnLength() {
+    public int getColumnsNumber() {
         return columnLength;
     }
 
@@ -199,48 +199,48 @@ public class MatrixJava implements Matrix {
     public Matrix mul(Matrix m) {
         rowsColumnsMismatch(this, m);
 
-        double[] result = new double[rowLength * m.getColumnLength()];
+        double[] result = new double[rowLength * m.getColumnsNumber()];
         for (int i = 0; i < rowLength; i++) {
-            for (int j = 0; j < m.getColumnLength(); j++) {
+            for (int j = 0; j < m.getColumnsNumber(); j++) {
                 for (int k = 0; k < columnLength; k++) {
-                    result[i * m.getColumnLength() + j] += array[i * columnLength + k] * m.getArray()[k * m.getColumnLength() + j];
+                    result[i * m.getColumnsNumber() + j] += array[i * columnLength + k] * m.getArray()[k * m.getColumnsNumber() + j];
                 }
             }
         }
 
-        return new MatrixJava(rowLength, m.getColumnLength(), result);
+        return new MatrixJava(rowLength, m.getColumnsNumber(), result);
     }
 
     public Matrix tMul(Matrix m) {
         rowsMismatch(this, m);
 
-        double[] result = new double[columnLength * m.getColumnLength()];
+        double[] result = new double[columnLength * m.getColumnsNumber()];
 
         for (int i = 0; i < columnLength; i++)
-            for (int j = 0; j < m.getColumnLength(); j++)
+            for (int j = 0; j < m.getColumnsNumber(); j++)
                 for (int k = 0; k < rowLength; k++) {
                     double a = array[k * columnLength + i];
-                    double b = m.getArray()[k * m.getColumnLength() + j];
-                    result[i * m.getColumnLength() + j] += a * b;
+                    double b = m.getArray()[k * m.getColumnsNumber() + j];
+                    result[i * m.getColumnsNumber() + j] += a * b;
                 }
 
-        return new MatrixJava(columnLength, m.getColumnLength(), result);
+        return new MatrixJava(columnLength, m.getColumnsNumber(), result);
     }
 
     public Matrix mulT(Matrix m) {
         columnsMismatch(this, m);
 
-        double[] result = new double[rowLength * m.getRowLength()];
+        double[] result = new double[rowLength * m.getRowsNumber()];
 
         for (int i = 0; i < rowLength; i++)
-            for (int j = 0; j < m.getRowLength(); j++)
+            for (int j = 0; j < m.getRowsNumber(); j++)
                 for (int k = 0; k < columnLength; k++) {
                     double a = array[i * columnLength + k];
-                    double b = m.getArray()[j * m.getColumnLength() + k];
-                    result[i * m.getRowLength() + j] += a * b;
+                    double b = m.getArray()[j * m.getColumnsNumber() + k];
+                    result[i * m.getRowsNumber() + j] += a * b;
                 }
 
-        return new MatrixJava(rowLength, m.getRowLength(), result);
+        return new MatrixJava(rowLength, m.getRowsNumber(), result);
     }
 
     /**
@@ -394,22 +394,22 @@ public class MatrixJava implements Matrix {
     }
 
     private void columnsMismatch(Matrix left, Matrix right) {
-        if (left.getColumnLength() != right.getColumnLength())
+        if (left.getColumnsNumber() != right.getColumnsNumber())
             throw new ArithmeticException("Не совпадает количество столбцов: %s и %s"
-                    .formatted(left.getColumnLength(), right.getColumnLength()));
+                    .formatted(left.getColumnsNumber(), right.getColumnsNumber()));
     }
 
     private void rowsMismatch(Matrix left, Matrix right) {
-        if (left.getRowLength() != right.getRowLength())
+        if (left.getRowsNumber() != right.getRowsNumber())
 
             throw new ArithmeticException("Не совпадает количество строк: %s и %s"
-                    .formatted(left.getRowLength(), right.getRowLength()));
+                    .formatted(left.getRowsNumber(), right.getRowsNumber()));
     }
 
     private void rowsColumnsMismatch(Matrix left, Matrix right) {
-        if (left.getColumnLength() != right.getRowLength())
+        if (left.getColumnsNumber() != right.getRowsNumber())
             throw new ArithmeticException("Не совпадает количество столбцов левой матрицы и строк правой матрицы: %s и %s"
-                    .formatted(left.getColumnLength(), right.getRowLength()));
+                    .formatted(left.getColumnsNumber(), right.getRowsNumber()));
     }
 
     @Override

@@ -41,23 +41,23 @@ class MatrixTest {
 
     @Test
     void getColLength() {
-        assertEquals(col1, matrix1.getColumnLength());
-        assertEquals(col2, matrix2.getColumnLength());
-        assertEquals(col3, matrix3.getColumnLength());
+        assertEquals(col1, matrix1.getColumnsNumber());
+        assertEquals(col2, matrix2.getColumnsNumber());
+        assertEquals(col3, matrix3.getColumnsNumber());
     }
 
     @Test
     void getRowLength() {
-        assertEquals(row1, matrix1.getRowLength());
-        assertEquals(row2, matrix2.getRowLength());
-        assertEquals(row3, matrix3.getRowLength());
+        assertEquals(row1, matrix1.getRowsNumber());
+        assertEquals(row2, matrix2.getRowsNumber());
+        assertEquals(row3, matrix3.getRowsNumber());
     }
 
     @Test
     void add() {
         Matrix result = matrix1.add(matrix1);
-        for (int i = 0; i < result.getRowLength(); i++) {
-            for (int j = 0; j < result.getColumnLength(); j++) {
+        for (int i = 0; i < result.getRowsNumber(); i++) {
+            for (int j = 0; j < result.getColumnsNumber(); j++) {
                 assertEquals(result.getItem(i, j), matrix1.getItem(i, j) + matrix1.getItem(i, j));
             }
         }
@@ -66,8 +66,8 @@ class MatrixTest {
     @Test
     void sub() {
         Matrix result = matrix1.sub(matrix1);
-        for (int i = 0; i < result.getRowLength(); i++) {
-            for (int j = 0; j < result.getColumnLength(); j++) {
+        for (int i = 0; i < result.getRowsNumber(); i++) {
+            for (int j = 0; j < result.getColumnsNumber(); j++) {
                 assertEquals(result.getItem(i, j), matrix1.getItem(i, j) - matrix1.getItem(i, j));
             }
         }
@@ -76,8 +76,8 @@ class MatrixTest {
     @Test
     void prod() {
         Matrix result = matrix1.prod(matrix1);
-        for (int i = 0; i < result.getRowLength(); i++) {
-            for (int j = 0; j < result.getColumnLength(); j++) {
+        for (int i = 0; i < result.getRowsNumber(); i++) {
+            for (int j = 0; j < result.getColumnsNumber(); j++) {
                 assertEquals(result.getItem(i, j), matrix1.getItem(i, j) * matrix1.getItem(i, j));
             }
         }
@@ -102,8 +102,8 @@ class MatrixTest {
     @Test
     void T() {
         Matrix result = matrix1.Trans();
-        for (int i = 0; i < result.getRowLength(); i++) {
-            for (int j = 0; j < result.getColumnLength(); j++) {
+        for (int i = 0; i < result.getRowsNumber(); i++) {
+            for (int j = 0; j < result.getColumnsNumber(); j++) {
                 assertEquals(result.getItem(i, j), matrix1.getItem(j, i));
             }
         }
@@ -119,8 +119,8 @@ class MatrixTest {
         norm = Math.sqrt(norm);
         m = m.normalize();
 
-        for (int i = 0; i < m.getRowLength(); i++) {
-            for (int j = 0; j < m.getColumnLength(); j++) {
+        for (int i = 0; i < m.getRowsNumber(); i++) {
+            for (int j = 0; j < m.getColumnsNumber(); j++) {
                 assertEquals(m.getItem(i, j), matrix1.getItem(i, j) / norm, 1e-9);
             }
         }
@@ -130,8 +130,8 @@ class MatrixTest {
     void scale() {
         int k = 3;
         Matrix result = matrix1.scale(k);
-        for (int i = 0; i < result.getRowLength(); i++) {
-            for (int j = 0; j < result.getColumnLength(); j++) {
+        for (int i = 0; i < result.getRowsNumber(); i++) {
+            for (int j = 0; j < result.getColumnsNumber(); j++) {
                 assertEquals(result.getItem(i, j), matrix1.getItem(i, j) * k);
             }
         }
@@ -141,8 +141,8 @@ class MatrixTest {
     void apply() {
         DoubleFunction<Double> f = Math::sin;
         Matrix result = matrix1.apply(f);
-        for (int i = 0; i < result.getRowLength(); i++) {
-            for (int j = 0; j < result.getColumnLength(); j++) {
+        for (int i = 0; i < result.getRowsNumber(); i++) {
+            for (int j = 0; j < result.getColumnsNumber(); j++) {
                 assertEquals(result.getItem(i, j), f.apply(matrix1.getItem(i, j)));
             }
         }

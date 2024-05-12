@@ -29,12 +29,13 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
         return create(1, columns);
     }
 
-    static Matrix create(int columns, double... matrix) {
-        return create(1, columns, matrix);
-    }
-
-    static Matrix create(double... matrix) {
-        return create(1, matrix.length, matrix);
+    /**
+     * Создает новую пустую матрицу-вектор с одной строкой и заданными данными
+     *
+     * @param data данные матрицы
+     */
+    static Matrix create(double... data) {
+        return create(1, data.length, data);
     }
 
     /**
@@ -64,8 +65,13 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
         return MatrixSettings.getMatrixClass().createInstance(rows, columns, data);
     }
 
-    static Matrix create(Matrix matrix) {
-        return create(matrix.getRowLength(), matrix.getColumnLength(), matrix.getArray());
+    /**
+     * Преобразует матрицу к классу-реализации Matrix, которая задана в MatrixSettings
+     * @param matrix Матрица для преобразования
+     * @return Преобразованная матрица с теми же свойствами и данными
+     */
+    static Matrix translate(Matrix matrix) {
+        return create(matrix.getRowsNumber(), matrix.getColumnsNumber(), matrix.getArray());
     }
 
     /**
@@ -73,15 +79,22 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
      *
      * @param rows    Количество строк матрицы
      * @param columns Количество столбцов матрицы
-     * @param matrix  Данные матрицы
+     * @param data  Данные матрицы
      * @throws IllegalArgumentException если количество ячеек матрицы не совпадает с количеством элементов массива
      */
-    Matrix createInstance(int rows, int columns, double... matrix);
+    Matrix createInstance(int rows, int columns, double... data);
 
+    /**
+     * Возвращает количество строк матрицы
+     * @return Значение количества строк матрицы
+     */
+    int getRowsNumber();
 
-    int getRowLength();
-
-    int getColumnLength();
+    /**
+     * Возвращает количество столбцов матрицы
+     * @return Значение количества столбцов матрицы
+     */
+    int getColumnsNumber();
 
     /**
      * Находит элемент матрицы по заданным координатам
@@ -139,8 +152,22 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
      */
     Matrix mul(Matrix matrix);
 
+    /**
+     * Производит матричное умножение матриц с предварительным транспонированием первой матрицы-множителя.
+     *
+     * @param matrix Матрица-множитель
+     * @return Матричное произведение матриц
+     * @throws ArithmeticException если количество столбцов левой матрицы не совпадает с количеством столбцов правой матрицы.
+     */
     Matrix tMul(Matrix matrix);
 
+    /**
+     * Производит матричное умножение матриц с предварительным транспонированием второй матрицы-множителя.
+     *
+     * @param matrix Матрица-множитель
+     * @return Матричное произведение матриц
+     * @throws ArithmeticException если количество столбцов левой матрицы не совпадает с количеством столбцов правой матрицы.
+     */
     Matrix mulT(Matrix matrix);
 
     /**
@@ -159,8 +186,13 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
      */
     Matrix scale(double n);
 
+    /**
+     * Производит поэлементное сложение матриц с предварительным масштабированием второй матрицы-множителя
+     * @param scale Коэффициент масштабирования
+     * @param matrix Матрица-множитель
+     * @return Результат умножения с масштабированием
+     */
     Matrix scaleAdd(double scale, Matrix matrix);
-
 
     /**
      * Отображает матрицу в матрицу такой же размерности по правилу функции отображения.
@@ -206,9 +238,18 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
     double average();
 
     /**
-     * Обнуляет данные матриц, сохраняя структуру
+     * Обнуляет данные матрицы, сохраняя структуру
      */
     void zeros();
+
+    static void zeros(Matrix... matrices) {
+        for (Matrix matrix : matrices) {
+            matrix.zeros();
+        }
+    }
+    Matrix clone();
+
+
 //
 //    /**
 //     * Печатает матрицы в стандартный поток вывода
@@ -236,13 +277,4 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
 //            System.out.println();
 //        }
 //    }
-
-    Matrix clone();
-
-    static void zeros(Matrix... matrices) {
-        for (Matrix matrix : matrices) {
-            matrix.zeros();
-        }
-    }
-
 }
