@@ -1,6 +1,6 @@
 package com.synapse.desktop.controllers;
 
-import com.synapse.core.samples.ListSampleService;
+import com.synapse.core.samples.InMemorySampleService;
 import com.synapse.core.samples.Sample;
 import com.synapse.core.samples.SampleService;
 import com.synapse.desktop.io.Extension;
@@ -173,7 +173,7 @@ public class SampleController implements ItemController<SampleService> {
     @Override
     public SampleService getItem() {
         List<Sample> list = table.getItems().stream().map(SampleView::getSample).toList();
-        return new ListSampleService(trainingSpinner.getValue(), list);
+        return new InMemorySampleService(trainingSpinner.getValue(), list);
     }
 
     public int getInputLayerSize() {

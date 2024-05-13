@@ -1,38 +1,35 @@
 package com.synapse.core.samples;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 @NoArgsConstructor
-@AllArgsConstructor
 public class FileSampleService implements SampleService {
 
-    private List<File> trainingFiles;
+    private Sampling<File> sampling = new Sampling<>();
     private int trainingItemsLimit;
-    private List<File> testingFiles;
     private int testingItemsLimit;
 
-    @Override
-    public List<String> getReport() {
-        List<String> report = new ArrayList<>();
-        report.add("FileSampleService:\n");
-        report.add("\ttraining items limit=%s\n".formatted(trainingItemsLimit));
-        report.add("\ttraining files:\n");
-        for (int i = 0; i < trainingFiles.size(); i++) {
-            report.add("\t\ttraining file %d=%s\n".formatted(i, trainingFiles.get(i).getPath()));
-        }
-        report.add("\ttesting items limit=%s\n".formatted(testingItemsLimit));
-        report.add("\ttesting files:\n");
-        for (int i = 0; i < testingFiles.size(); i++) {
-            report.add("\t\ttesting file %d=%s\n".formatted(i, testingFiles.get(i).getPath()));
-        }
+    public FileSampleService(Sampling<File> sampling, int trainingLimit, int testingLimit) {
+        this.sampling = sampling;
+        trainingItemsLimit = trainingLimit;
+        testingItemsLimit = testingLimit;
+    }
 
-        return report;
+    public FileSampleService(Sampling<File> sampling) {
+        this(sampling, Integer.MAX_VALUE, Integer.MAX_VALUE);
+    }
+
+    public FileSampleService(List<File> trainingFiles, int trainingLimit,
+                             List<File> testingFiles, int testingLimit) {
+        this(new Sampling<>(trainingFiles, testingFiles), trainingLimit, testingLimit);
+    }
+
+    public FileSampleService(List<File> trainingFiles, List<File> testingFiles) {
+        this(trainingFiles, Integer.MAX_VALUE, testingFiles, Integer.MAX_VALUE);
     }
 
     public void setTrainingFiles(File... trainingFiles) {
@@ -44,23 +41,34 @@ public class FileSampleService implements SampleService {
     }
 
     public void setTrainingFile(int trainingItemsLimit, File... trainingFiles) {
-        this.trainingFiles = List.of(trainingFiles);
+        this.sampling.setTrainingSamples(List.of(trainingFiles));
         this.trainingItemsLimit = trainingItemsLimit;
     }
 
     public void setTestingFile(int testingItemsLimit, File... testingFiles) {
-        this.testingFiles = List.of(testingFiles);
+        this.sampling.setTestingSamples(List.of(testingFiles));
         this.testingItemsLimit = testingItemsLimit;
     }
 
     @Override
+    public List<String> getReport() {
+        List<String> report = List.of(
+                "FileSampleService:\n",
+                "\ttraining items limit=%s\n".formatted(trainingItemsLimit),
+                "\ttesting  items limit=%s\n".formatted(testingItemsLimit)
+        );
+        addSubReports(report, sampling.getReport());
+        return report;
+    }
+
+    @Override
     public Iterable<Sample> getTrainingSampling() {
-        return () -> new SampleReader(trainingItemsLimit, trainingFiles);
+        return () -> new SampleReader(trainingItemsLimit, sampling.getTrainingSamples());
     }
 
     @Override
     public Iterable<Sample> getTestingSampling() {
-        return () -> new SampleReader(testingItemsLimit, testingFiles);
+        return () -> new SampleReader(testingItemsLimit, sampling.getTestingSamples());
     }
 
     private static class SampleReader implements Iterator<Sample> {

@@ -8,4 +8,8 @@ public interface Reportable {
     default void printReport(){
         getReport().forEach(System.out::print);
     }
+
+    default void addSubReports(List<String> report, List<String> subreports){
+        subreports.forEach(r -> report.add("\t" + r));
+    }
 }

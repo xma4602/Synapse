@@ -3,7 +3,7 @@ package com.synapse.desktop.controllers;
 import com.synapse.core.activation.Activation;
 import com.synapse.core.experimentation.ExperimentParameters;
 import com.synapse.core.nets.NetParameters;
-import com.synapse.core.samples.ListSampleService;
+import com.synapse.core.samples.InMemorySampleService;
 import com.synapse.core.samples.SampleService;
 import com.synapse.core.training.TrainingParameters;
 import com.synapse.desktop.SceneService;
@@ -127,7 +127,7 @@ public class TrainingPreparationController implements ItemController<ExperimentP
         if (!controller.isValid()) {
             root.getChildren().add(new TreeItem<>("Не все параметры введены корректно."));
         } else {
-            ListSampleService item = (ListSampleService) controller.getItem();
+            InMemorySampleService item = (InMemorySampleService) controller.getItem();
             item.getReport().forEach(r -> root.getChildren().add(new TreeItem<>(r)));
         }
 
