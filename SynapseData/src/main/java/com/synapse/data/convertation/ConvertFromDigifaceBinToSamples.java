@@ -8,25 +8,24 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.function.IntFunction;
 
 public class ConvertFromDigifaceBinToSamples {
 
-    public static final int N_THREADS = 50;
-
     public static void main(String[] args) throws InterruptedException {
-        Path mainDir = Path.of(".", "DigiFace");
-        File sourceDir = Path.of(mainDir.toString(), "images").toFile();
-        File resultDir = Path.of(mainDir.toString(), "samples").toFile();
+        String root = "C:\\Users\\xma4602\\Documents\\ВУЗ\\Диплом\\программа\\datasets\\DigiFace";
+        File sourceDir = Path.of(root, "images").toFile();
+        File resultDir = Path.of(root, "samples").toFile();
 
         Arrays.stream(resultDir.listFiles()).forEach(File::delete);
 
         File[] dirs = sourceDir.listFiles();
-        assert dirs != null;
         dirs = Arrays.stream(dirs)
                 .map(file -> Map.entry(Integer.parseInt(file.getName()), file))
                 .sorted(Map.Entry.comparingByKey())
@@ -35,18 +34,16 @@ public class ConvertFromDigifaceBinToSamples {
                 .toArray(File[]::new);
 
         List<Callable<File>> tasks = getTasks(resultDir, dirs);
-        ExecutorService executorService = Executors.newFixedThreadPool(N_THREADS);
+        ExecutorService executorService = Executors.newWorkStealingPool();
         executorService.invokeAll(tasks);
         executorService.shutdown();
     }
 
     private static List<Callable<File>> getTasks(File resultDir, File[] dirs) {
         List<Callable<File>> tasks = new ArrayList<>();
-        for (int i = 0; i < dirs.length; i++) {
-            File[] files = dirs[i].listFiles();
-            assert files != null;
-            for (File file : files) {
-                tasks.add(getTask(resultDir, file, i, dirs.length));
+        for (int index = 0; index < dirs.length; index++) {
+            for (File file : dirs[index].listFiles()) {
+                tasks.add(getTask(resultDir, file, index, dirs.length));
             }
         }
         return tasks;

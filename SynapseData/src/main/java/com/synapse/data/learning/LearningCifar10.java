@@ -6,7 +6,7 @@ import com.synapse.core.experimentation.Experimenter;
 import com.synapse.core.experimentation.ParallelExperimenter;
 import com.synapse.core.rates.Rate;
 import com.synapse.core.samples.FileSampleService;
-import com.synapse.core.samples.ListSampleService;
+import com.synapse.core.samples.InMemorySampleService;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,7 +32,7 @@ class LearningCifar10 {
         FileSampleService service = new FileSampleService();
         service.setTrainingFile(1000, trainingFile.toFile());
         service.setTestingFile(500, testingFile.toFile());
-        ListSampleService sampleService = new ListSampleService(service);
+        InMemorySampleService sampleService = new InMemorySampleService(service);
 
         Experimenter experimenter = new ParallelExperimenter();
         experimenter.setActivations(Activation.arrayOf(Activation.getDefault(), 2));

@@ -32,7 +32,8 @@ class TestActivations {
         Path resultFile = Path.of(root, "experimentation", getNow() + "_result.exp.res");
 
         FileSampleService sampleService = new FileSampleService(
-                List.of(trainingFile.toFile()), 500, List.of(testingFile.toFile()), 250
+                List.of(trainingFile.toFile()), 500,
+                List.of(testingFile.toFile()), 250
         );
 
         Experimenter experimenter = new ParallelExperimenter();
