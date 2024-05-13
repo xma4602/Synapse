@@ -15,11 +15,7 @@ import static com.synapse.core.tools.DelayedFormatter.format;
 @Slf4j
 public class Tester {
 
-    public static final double OVERFITTING_LIMIT = 0.2;
-    /**
-     * Коэффициенты формулы для расчета скорости
-     */
-    private static final int[] COEFFICIENTS = new int[]{+147, -360, +450, -400, +225, -72, +10};
+    public static final double OVERFITTING_LIMIT = 10.0;
 
     private final String name;
     private double errorLimit;
@@ -103,7 +99,7 @@ public class Tester {
     private static int getClassIndex(Matrix matrix) {
         int maxIndex = 0;
         for (int i = 0; i < matrix.getItemNumber(); i++) {
-            maxIndex = matrix.getItem(0, i) >  matrix.getItem(0, maxIndex) ? i : maxIndex;
+            maxIndex = matrix.getItem(0, i) > matrix.getItem(0, maxIndex) ? i : maxIndex;
         }
         return maxIndex;
     }
@@ -121,17 +117,61 @@ public class Tester {
      * @return значение скорость согласно формуле.
      */
     private double getSpeed(List<Double> errors) {
-        int size = errors.size() - 1;
-        double speed = 0.0;
-        for (int i = 0; i < COEFFICIENTS.length; i++) {
-            speed += COEFFICIENTS[i] * getValue(errors, size - i);
-        }
+        return switch (errors.size()) {
+            case 1 -> 0.0;
+            case 2 -> getSpeed2(errors);
+            case 3 -> getSpeed3(errors);
+            case 4 -> getSpeed4(errors);
+            case 5 -> getSpeed5(errors);
+            default -> getSpeed6(errors);
+        };
+    }
 
+    private double getSpeed2(List<Double> errors) {
+        return errors.get(1) - errors.get(0);
+    }
+
+    private double getSpeed3(List<Double> errors) {
+        double speed = 0;
+        speed += +3 * getValue(errors, 0);
+        speed += -4 * getValue(errors, -1);
+        speed += +1 * getValue(errors, -2);
+        return speed / 2;
+    }
+
+    private double getSpeed4(List<Double> errors) {
+        double speed = 0;
+        speed += +11 * getValue(errors, 0);
+        speed += -18 * getValue(errors, -1);
+        speed += +9 * getValue(errors, -2);
+        speed += -2 * getValue(errors, -3);
+        return speed / 6;
+    }
+
+    private double getSpeed5(List<Double> errors) {
+        double speed = 0;
+        speed += +25 * getValue(errors, 0);
+        speed += -48 * getValue(errors, -1);
+        speed += +36 * getValue(errors, -2);
+        speed += -16 * getValue(errors, -3);
+        speed += +3 * getValue(errors, -4);
+        return speed / 12;
+    }
+
+    private double getSpeed6(List<Double> errors) {
+        double speed = 0;
+        speed += +137 * getValue(errors, 0);
+        speed += -300 * getValue(errors, -1);
+        speed += +300 * getValue(errors, -2);
+        speed += -200 * getValue(errors, -3);
+        speed += +75 * getValue(errors, -4);
+        speed += -12 * getValue(errors, -5);
         return speed / 60;
     }
 
+
     private double getValue(List<Double> errors, int index) {
-        return index < 0 ? getValue(errors, index + 1) : errors.get(index);
+        return errors.get(errors.size() - 1 - index);
     }
 
 }

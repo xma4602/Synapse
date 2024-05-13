@@ -72,7 +72,7 @@ public class SimpleTeacher extends Teacher {
                             format("%03d", epochCount + 1),
                             format("%05d", batchCount),
                             format("%05d", sampleCount),
-                            format("%.4f", error));
+                            format("%.8f", error));
                     sampleCount++;
                 }
 
