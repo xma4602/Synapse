@@ -56,6 +56,11 @@
             <artifactId>ejml-simple</artifactId>
             <version>0.43</version>
         </dependency>
+        <dependency>
+            <groupId>org.ujmp</groupId>
+            <artifactId>ujmp-core</artifactId>
+            <version>0.3.0</version>
+        </dependency>
     </dependencies>
 
     <build>

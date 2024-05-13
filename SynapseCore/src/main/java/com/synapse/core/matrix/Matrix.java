@@ -67,6 +67,7 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
 
     /**
      * Преобразует матрицу к классу-реализации Matrix, которая задана в MatrixSettings
+     *
      * @param matrix Матрица для преобразования
      * @return Преобразованная матрица с теми же свойствами и данными
      */
@@ -79,22 +80,30 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
      *
      * @param rows    Количество строк матрицы
      * @param columns Количество столбцов матрицы
-     * @param data  Данные матрицы
+     * @param data    Данные матрицы
      * @throws IllegalArgumentException если количество ячеек матрицы не совпадает с количеством элементов массива
      */
     Matrix createInstance(int rows, int columns, double... data);
 
     /**
      * Возвращает количество строк матрицы
+     *
      * @return Значение количества строк матрицы
      */
     int getRowsNumber();
 
     /**
      * Возвращает количество столбцов матрицы
+     *
      * @return Значение количества столбцов матрицы
      */
     int getColumnsNumber();
+
+
+    default int getItemNumber() {
+        return getRowsNumber() * getColumnsNumber();
+    }
+
 
     /**
      * Находит элемент матрицы по заданным координатам
@@ -188,7 +197,8 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
 
     /**
      * Производит поэлементное сложение матриц с предварительным масштабированием второй матрицы-множителя
-     * @param scale Коэффициент масштабирования
+     *
+     * @param scale  Коэффициент масштабирования
      * @param matrix Матрица-множитель
      * @return Результат умножения с масштабированием
      */
@@ -247,6 +257,7 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
             matrix.zeros();
         }
     }
+
     Matrix clone();
 
 //

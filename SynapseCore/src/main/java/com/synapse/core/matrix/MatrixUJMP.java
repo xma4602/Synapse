@@ -24,11 +24,13 @@ public class MatrixUJMP implements Matrix {
     @Override
     public Matrix createInstance(int rows, int columns, double... data) {
         DenseDoubleMatrix2D denseDoubleMatrix2D = DoubleMatrix.Factory.zeros(rows, columns);
+
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
-                denseDoubleMatrix2D.setAsDouble(data[row * rows + columns]);
+                denseDoubleMatrix2D.setAsDouble(data[row * columns + col], row, col);
             }
         }
+
         return new MatrixUJMP(denseDoubleMatrix2D);
     }
 
@@ -49,48 +51,50 @@ public class MatrixUJMP implements Matrix {
 
     @Override
     public double[] getArray() {
-        double[] doubles = new double[(int) (matrix2D.getRowCount() * matrix2D.getColumnCount())];
-        for (int row = 0; row < matrix2D.getColumnCount(); row++) {
-            for (int col = 0; col < matrix2D.getColumnCount(); col++) {
-                doubles[(int) (row * matrix2D.getColumnCount() + col)] = matrix2D.getAsDouble(row, col);
-            }
+        int columnCount = (int) matrix2D.getColumnCount();
+        int rowCount = (int) matrix2D.getRowCount();
+        double[] doubles = new double[rowCount * columnCount];
+
+        for (int row = 0; row < columnCount; row++) {
+            for (int col = 0; col < columnCount; col++)
+                doubles[row * columnCount + col] = matrix2D.getAsDouble(row, col);
         }
         return doubles;
     }
 
     @Override
     public Matrix add(Matrix matrix) {
-        DenseDoubleMatrix2D matr = (DenseDoubleMatrix2D) matrix;
+        DenseDoubleMatrix2D matr = ((MatrixUJMP) matrix).matrix2D;
         return new MatrixUJMP((DenseDoubleMatrix2D) matrix2D.plus(matr));
     }
 
     @Override
     public Matrix sub(Matrix matrix) {
-        DenseDoubleMatrix2D matr = (DenseDoubleMatrix2D) matrix;
+        DenseDoubleMatrix2D matr = ((MatrixUJMP) matrix).matrix2D;
         return new MatrixUJMP((DenseDoubleMatrix2D) matrix2D.minus(matr));
     }
 
     @Override
     public Matrix prod(Matrix matrix) {
-        DenseDoubleMatrix2D matr = (DenseDoubleMatrix2D) matrix;
+        DenseDoubleMatrix2D matr = ((MatrixUJMP) matrix).matrix2D;
         return new MatrixUJMP((DenseDoubleMatrix2D) matrix2D.times(matr));
     }
 
     @Override
     public Matrix mul(Matrix matrix) {
-        DenseDoubleMatrix2D matr = (DenseDoubleMatrix2D) matrix;
+        DenseDoubleMatrix2D matr = ((MatrixUJMP) matrix).matrix2D;
         return new MatrixUJMP((DenseDoubleMatrix2D) matrix2D.mtimes(matr));
     }
 
     @Override
     public Matrix tMul(Matrix matrix) {
-        DenseDoubleMatrix2D matr = (DenseDoubleMatrix2D) matrix;
+        DenseDoubleMatrix2D matr = ((MatrixUJMP) matrix).matrix2D;
         return new MatrixUJMP((DenseDoubleMatrix2D) matrix2D.transpose().mtimes(matr));
     }
 
     @Override
     public Matrix mulT(Matrix matrix) {
-        DenseDoubleMatrix2D matr = (DenseDoubleMatrix2D) matrix;
+        DenseDoubleMatrix2D matr = ((MatrixUJMP) matrix).matrix2D;
         return new MatrixUJMP((DenseDoubleMatrix2D) matrix2D.mtimes(matr.transpose()));
     }
 
@@ -106,7 +110,7 @@ public class MatrixUJMP implements Matrix {
 
     @Override
     public Matrix scaleAdd(double scale, Matrix matrix) {
-        DenseDoubleMatrix2D matr = (DenseDoubleMatrix2D) matrix;
+        DenseDoubleMatrix2D matr = ((MatrixUJMP) matrix).matrix2D;
         return new MatrixUJMP((DenseDoubleMatrix2D) matrix2D.plus(matr.times(scale)));
     }
 
@@ -161,7 +165,18 @@ public class MatrixUJMP implements Matrix {
 
     @Override
     public Iterator<Double> iterator() {
-        return (Iterator<Double>) matrix2D.allValues();
+        Iterator<Object> iterator = matrix2D.allValues().iterator();
+        return new Iterator<>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Double next() {
+                return (Double) iterator.next();
+            }
+        };
     }
 
     @Override

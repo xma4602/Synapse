@@ -102,9 +102,8 @@ public class Tester {
 
     private static int getClassIndex(Matrix matrix) {
         int maxIndex = 0;
-        double[] array = matrix.getArray();
-        for (int i = 0; i < array.length; i++) {
-            maxIndex = array[i] > array[maxIndex] ? i : maxIndex;
+        for (int i = 0; i < matrix.getItemNumber(); i++) {
+            maxIndex = matrix.getItem(0, i) >  matrix.getItem(0, maxIndex) ? i : maxIndex;
         }
         return maxIndex;
     }
