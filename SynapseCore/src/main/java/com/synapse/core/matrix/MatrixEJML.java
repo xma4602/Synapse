@@ -6,12 +6,17 @@ import org.ejml.simple.SimpleMatrix;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.util.Iterator;
 import java.util.function.DoubleFunction;
 
 
 @NoArgsConstructor
 public class MatrixEJML implements Matrix {
+
+
+    @Serial
+    private static final long serialVersionUID = -6776373323609919141L;
 
     private SimpleMatrix simpleMatrix;
 
@@ -170,4 +175,9 @@ public class MatrixEJML implements Matrix {
     public Iterator<Double> iterator() {
         return simpleMatrix.iterator(true, 0, 0, simpleMatrix.getNumRows(), simpleMatrix.getNumCols());
     }
+    @Override
+    public String toString() {
+        return "Matrix{%dx%d}".formatted(getRowsNumber(), getColumnsNumber());
+    }
+
 }

@@ -260,6 +260,7 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
 
     Matrix clone();
 
+
 //
 //    /**
 //     * Печатает матрицы в стандартный поток вывода

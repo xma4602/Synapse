@@ -201,4 +201,10 @@ public class MatrixUJMP implements Matrix {
         }
     }
 
+
+    @Override
+    public String toString() {
+        return "Matrix{%dx%d}".formatted(getRowsNumber(), getColumnsNumber());
+    }
+
 }
