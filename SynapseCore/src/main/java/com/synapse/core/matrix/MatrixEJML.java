@@ -109,11 +109,12 @@ public class MatrixEJML implements Matrix {
     @Override
     public Matrix apply(DoubleFunction<Double> function) {
 
-        var matrix = simpleMatrix.copy().getDDRM();
+        SimpleMatrix matrix = simpleMatrix.copy();
+        var data = matrix.getDDRM().getData();
         for (int i = 0; i < matrix.getNumElements(); i++)
-            matrix.set(i, function.apply(matrix.get(i)));
+            data[i] = function.apply(matrix.get(i));
 
-        return new MatrixEJML(new SimpleMatrix(matrix));
+        return new MatrixEJML(matrix);
     }
 
     @Override
@@ -175,9 +176,16 @@ public class MatrixEJML implements Matrix {
     public Iterator<Double> iterator() {
         return simpleMatrix.iterator(true, 0, 0, simpleMatrix.getNumRows(), simpleMatrix.getNumCols());
     }
+
     @Override
     public String toString() {
-        return "Matrix{%dx%d}".formatted(getRowsNumber(), getColumnsNumber());
+        double[] data = simpleMatrix.getDDRM().data;
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < data.length - 1; i++) {
+            builder.append("%+.4f,".formatted(data[i]));
+        }
+        builder.append("%+.4f".formatted(data[data.length - 1]));
+        return "Matrix{%dx%d}[%s]".formatted(getRowsNumber(), getColumnsNumber(), builder);
     }
 
 }

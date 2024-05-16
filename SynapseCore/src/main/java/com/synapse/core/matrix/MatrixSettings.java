@@ -10,5 +10,5 @@ public class MatrixSettings {
         matrixClass = matrix;
     }
 
-    private static Matrix matrixClass = new MatrixEJML();
+    private static Matrix matrixClass = new MatrixJava();
 }

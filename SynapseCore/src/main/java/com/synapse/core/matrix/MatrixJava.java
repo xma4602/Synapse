@@ -383,10 +383,6 @@ public class MatrixJava implements Matrix {
         return new MatrixJava(rowLength, columnLength, Arrays.copyOf(array, array.length));
     }
 
-    @Override
-    public String toString() {
-        return "Matrix{%dx%d}".formatted(rowLength, columnLength);
-    }
 
     @Override
     public Iterator<Double> iterator() {
@@ -431,4 +427,14 @@ public class MatrixJava implements Matrix {
         }
     }
 
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < array.length - 1; i++) {
+            builder.append("%+.4f,".formatted(array[i]));
+        }
+        builder.append("%+.4f".formatted(array[array.length - 1]));
+        return "Matrix{%dx%d}[%s]".formatted(getRowsNumber(), getColumnsNumber(), builder);
+    }
 }
