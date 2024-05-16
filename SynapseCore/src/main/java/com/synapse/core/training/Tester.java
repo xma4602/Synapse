@@ -15,7 +15,7 @@ import static com.synapse.core.tools.DelayedFormatter.format;
 @Slf4j
 public class Tester {
 
-    public static final double OVERFITTING_LIMIT = 10.0;
+    public static final double OVERFITTING_LIMIT = 1.0;
 
     private final String name;
     private double errorLimit;
@@ -51,13 +51,19 @@ public class Tester {
             int targetIndex = getClassIndex(target);
             if (resultIndex == targetIndex) percent++;
             count++;
-            log.trace("{} /  TESTING: count={}, error={}, percent={}%, resultIndex={}, targetIndex={}",
+            log.trace("{} /  TESTING: count={}, error={}, percent={}%",
                     name,
                     format("%04d", count),
                     format("%07.4f", error / count),
-                    format("%07.4f", percent / count * 100),
-                    resultIndex, targetIndex
+                    format("%08.4f", percent / count * 100)
             );
+//            log.trace("{} /  TESTING: count={}, error={}, percent={}%, result={}, target={}",
+//                    name,
+//                    format("%04d", count),
+//                    format("%07.4f", error / count),
+//                    format("%08.4f", percent / count * 100),
+//                    result, target
+//            );
         }
 
         error /= count;
@@ -96,7 +102,7 @@ public class Tester {
 
     }
 
-    private static int getClassIndex(Matrix matrix) {
+    public static int getClassIndex(Matrix matrix) {
         int maxIndex = 0;
         for (int i = 0; i < matrix.getItemNumber(); i++) {
             maxIndex = matrix.getItem(0, i) > matrix.getItem(0, maxIndex) ? i : maxIndex;
@@ -171,7 +177,7 @@ public class Tester {
 
 
     private double getValue(List<Double> errors, int index) {
-        return errors.get(errors.size() - 1 - index);
+        return errors.get(errors.size() - 1 + index);
     }
 
 }

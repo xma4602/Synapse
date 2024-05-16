@@ -63,7 +63,7 @@ public class SimpleTeacher extends Teacher {
 
                 for (Sample sample : batch) { //цикл одного пакета
                     Matrix output = forwardPass(net, sample.getSource()); //прямой проход сети
-                    Matrix trainingError = sample.getTarget().sub(output); //вычисление ошибки сети
+                    Matrix trainingError = getError(sample.getTarget(), output); //вычисление ошибки сети
                     double error = calcTrainingError(trainingError); //сохранение тренировочной ошибки
                     Matrix[][] corrects = backwardPass(net, trainingError); //обратный проход
                     addCorrections(corrects); //сложение корректировки прохода с корректировкой пакета
@@ -72,7 +72,17 @@ public class SimpleTeacher extends Teacher {
                             format("%03d", epochCount + 1),
                             format("%05d", batchCount),
                             format("%05d", sampleCount),
-                            format("%.8f", error));
+                            format("%.8f", error)
+                    );
+//                    log.trace("{} / TRAINING: epoch={}, batch={}, sample={}, error={}, result={}, target={}",
+//                            teacherName,
+//                            format("%03d", epochCount + 1),
+//                            format("%05d", batchCount),
+//                            format("%05d", sampleCount),
+//                            format("%.8f", error),
+//                            output,
+//                            sample.getTarget()
+//                    );
                     sampleCount++;
                 }
 
@@ -97,6 +107,10 @@ public class SimpleTeacher extends Teacher {
         trainingResult.setTestingErrors(tester.getTestingErrors());
         trainingResult.setTestingPercents(tester.getTestingPercents());
         log.info("{} / LEARNING: COMPLETED", teacherName);
+    }
+
+    private Matrix getError(Matrix target, Matrix output) {
+        return target.sub(output);
     }
 
     private Iterable<Iterable<Sample>> getNewBatches() {
@@ -146,12 +160,12 @@ public class SimpleTeacher extends Teacher {
         Matrix[] weights = net.getWeights();
         Matrix[] biases = net.getBiases();
 
-        y[0] = input;
+        y[0] = input; // Y[0] = X
         for (int i = 0; i < net.getInterLayersCount(); i++) {
-            v[i] = y[i].mul(weights[i]).add(biases[i]);
-            y[i + 1] = v[i].apply(f[i]);
+            v[i] = y[i].mul(weights[i]).add(biases[i]); // V[i] = Y[i] x W[i] + B[i]
+            y[i + 1] = v[i].apply(f[i]); // Y[i+1] = f(V[i])
         }
-        return y[y.length - 1];
+        return y[y.length - 1]; // O = Y[L-1]
     }
 
     private Matrix[][] backwardPass(Net net, Matrix error) {
@@ -160,14 +174,16 @@ public class SimpleTeacher extends Teacher {
 
         int last = w.length - 1;
 
-        g[last] = v[last].apply(df[last]).prod(error).scale(-1);
-        w[last] = y[last].tMul(g[last]);
-        b[last] = g[last];
+        Matrix apply = v[last].apply(df[last]);
+        g[last] = apply.prod(error).scale(-1); // δ[L-1] = -f'(V[L-1]) * E
+        w[last] = y[last].tMul(g[last]); // ΔW[L-1] = Y[L-1]^T x δ[L-1]
+        b[last] = g[last]; // ΔB[L-1] = δ[L-1]
 
         for (int i = last - 1; i >= 0; i--) {
-            g[i] = g[i + 1].mulT(weights[i + 1]).prod(v[i].apply(df[i]));
-            w[i] = y[i].tMul(g[i]);
-            b[i] = g[i];
+            Matrix apply1 = v[i].apply(df[i]);
+            g[i] = apply1.prod(g[i + 1].mulT(weights[i + 1])); // δ[i] = f'(V[i]) * (δ[i+1] x W[i+1]^T)
+            w[i] = y[i].tMul(g[i]); // ΔW[i] = Y[i]^T x δ[i]
+            b[i] = g[i]; // ΔB[i] = δ[i]
         }
 
         return new Matrix[][]{w, b};
@@ -178,8 +194,8 @@ public class SimpleTeacher extends Teacher {
         Matrix[] biases = net.getBiases();
 
         for (int i = 0; i < net.getInterLayersCount(); i++) {
-            weights[i] = weights[i].scaleAdd(-rate, dw[i]);
-            biases[i] = biases[i].scaleAdd(-rate, db[i]);
+            weights[i] = weights[i].scaleAdd(-rate, dw[i]); // W[i] = W[i] + (η * ΔW[i])
+            biases[i] = biases[i].scaleAdd(-rate, db[i]);  // B[i] = B[i] + (η * ΔB[i])
 //            weights[i] = weights[i].add(dw[i].scale(-rate));
 //            biases[i] = biases[i].add(db[i].scale(-rate));
         }

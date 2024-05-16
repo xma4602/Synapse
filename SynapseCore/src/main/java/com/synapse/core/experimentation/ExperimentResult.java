@@ -16,6 +16,7 @@ import java.util.*;
 @NoArgsConstructor
 public class ExperimentResult implements Externalizable, Reportable {
 
+    @Getter
     private SortedMap<Integer, Map.Entry<ExperimentParameters, TrainingResult>> experiences = new TreeMap<>();
     //    private ExperimentStatistics statistics = null;
     @Getter
