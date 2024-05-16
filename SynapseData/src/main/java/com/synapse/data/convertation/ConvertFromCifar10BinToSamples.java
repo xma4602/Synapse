@@ -40,7 +40,7 @@ public class ConvertFromCifar10BinToSamples {
             sampleFile.createNewFile();
             try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(sampleFile))) {
                 int i = 1;
-                for (Sample sample : Cifar10.readBinFile(binFile)) {
+                for (Sample sample : Cifar10.readSamplesFromBinFile(binFile)) {
                     out.writeObject(sample);
                     System.out.printf("FILE: %17s | SAMPLE: %04d%n", binFile.getName(), i++);
                 }
