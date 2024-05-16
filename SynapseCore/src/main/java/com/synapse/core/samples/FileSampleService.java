@@ -41,12 +41,12 @@ public class FileSampleService implements SampleService {
     }
 
     public void setTrainingFile(int trainingItemsLimit, File... trainingFiles) {
-        this.sampling.setTrainingSamples(List.of(trainingFiles));
+        this.sampling.getTrainingSamples().addAll(List.of(trainingFiles));
         this.trainingItemsLimit = trainingItemsLimit;
     }
 
     public void setTestingFile(int testingItemsLimit, File... testingFiles) {
-        this.sampling.setTestingSamples(List.of(testingFiles));
+        this.sampling.getTestingSamples().addAll(List.of(testingFiles));
         this.testingItemsLimit = testingItemsLimit;
     }
 

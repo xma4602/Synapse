@@ -1,14 +1,10 @@
 package com.synapse.core.samples;
 
 import com.synapse.core.tools.Reportable;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public interface SampleService extends Reportable {
 
@@ -39,12 +35,18 @@ public interface SampleService extends Reportable {
         return res;
     }
 
-    @Data
-    @AllArgsConstructor
+    @Getter
     @NoArgsConstructor
     class Sampling<T> implements Reportable {
-        private List<T> trainingSamples = new ArrayList<>();
-        private List<T> testingSamples = new ArrayList<>();
+
+
+        private Set<T> trainingSamples = new HashSet<>();
+        private Set<T> testingSamples = new HashSet<>();
+
+        public Sampling(Collection<T> trainingSamples, Collection<T> testingSamples) {
+            this.trainingSamples.addAll(trainingSamples);
+            this.testingSamples.addAll(testingSamples);
+        }
 
         public int getSamplingSize() {
             return trainingSamples.size() + testingSamples.size();
