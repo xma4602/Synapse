@@ -17,17 +17,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-class LearningIris {
+public class LearningIris {
 
     public static final int IRIS_INPUT = 4;
     public static final int IRIS_OUTPUT = 3;
 
-    static String getNow() {
-        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
-    }
-
 
     public static void main(String[] args) throws IOException {
+        learn();
+    }
+
+    public static ExperimentResult learn() throws IOException {
         String root = "C:\\Users\\xma4602\\Documents\\ВУЗ\\Диплом\\программа\\datasets\\iris";
         Path dataFile = Path.of(root, "samples", "data.sample");
 
@@ -42,12 +42,8 @@ class LearningIris {
         );
         experimenter.setBatchSizes(1);
         experimenter.setErrorLimits(0.1);
-        experimenter.setRates(
-                new ConstantRate(0.5),
-                new ConstantRate(1),
-                new ConstantRate(1.5)
-        );
-        experimenter.setEpochCounts(100);
+        experimenter.setRates(new ConstantRate(0.5));
+        experimenter.setEpochCounts(10);
         experimenter.setSampleServices(sampleService);
         experimenter.setLayerSizes(new int[]{IRIS_INPUT, 100, IRIS_OUTPUT});
 
@@ -59,7 +55,11 @@ class LearningIris {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(resultFile.toFile()))) {
             out.writeObject(experimentResult);
         }
+        return experimentResult;
+    }
 
+    static String getNow() {
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
     }
 
     private static List<Sample> readSamples(Path dataFile) throws IOException {

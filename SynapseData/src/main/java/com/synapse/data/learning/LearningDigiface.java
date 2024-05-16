@@ -19,7 +19,7 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-class LearningDigiface {
+public class LearningDigiface {
 
     static String getNow() {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));

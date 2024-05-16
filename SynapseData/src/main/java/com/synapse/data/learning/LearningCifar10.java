@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-class LearningCifar10 {
+public class LearningCifar10 {
 
     public static final int CIFAR10_INPUT = 32 * 32 * 3;
     public static final int CIFAR10_OUTPUT = 10;
