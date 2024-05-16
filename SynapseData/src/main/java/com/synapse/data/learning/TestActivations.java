@@ -2,7 +2,7 @@ package com.synapse.data.learning;
 
 import com.synapse.core.activation.Activation;
 import com.synapse.core.activation.ActivationAtan;
-import com.synapse.core.activation.ActivationLogistic;
+import com.synapse.core.activation.ActivationLog;
 import com.synapse.core.experimentation.ExperimentResult;
 import com.synapse.core.experimentation.Experimenter;
 import com.synapse.core.experimentation.ParallelExperimenter;
@@ -44,9 +44,9 @@ class TestActivations {
         experimenter.setBatchSizes(1);
         experimenter.setLayerSizes(new int[]{3072, 5000, 5000, 10});
         experimenter.setActivations(
-                Activation.arrayOf(new ActivationLogistic(0.1), 3),
-                Activation.arrayOf(new ActivationLogistic(0.2), 3),
-                Activation.arrayOf(new ActivationLogistic(0.5), 3),
+                Activation.arrayOf(new ActivationLog(0.1), 3),
+                Activation.arrayOf(new ActivationLog(0.2), 3),
+                Activation.arrayOf(new ActivationLog(0.5), 3),
                 Activation.arrayOf(new ActivationAtan(0.1), 3),
                 Activation.arrayOf(new ActivationAtan(0.2), 3),
                 Activation.arrayOf(new ActivationAtan(0.5), 3)
