@@ -5,10 +5,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 
 import static java.lang.Math.exp;
-import static java.lang.Math.pow;
 
 @NoArgsConstructor
-public class ActivationLogistic extends ActivationBase {
+public class ActivationLog extends ActivationBase {
 
     @Serial
     private final static long serialVersionUID = 7704309848611296761L;
@@ -18,9 +17,12 @@ public class ActivationLogistic extends ActivationBase {
         return "logistic";
     }
 
-    public ActivationLogistic(double k) {
+    public ActivationLog(double k) {
         scale = k;
-        activator = x -> 1 / (1 + exp(-scale * x));
-        deactivator = x -> scale * exp(-scale * x) / pow(1 + exp(-scale * x), 2);
+        activator = x -> 1.0 / (1.0 + exp(-scale * x));
+        deactivator = x -> {
+            double exp = activator.apply(x);
+            return scale * exp * (1 - exp);
+        };
     }
 }

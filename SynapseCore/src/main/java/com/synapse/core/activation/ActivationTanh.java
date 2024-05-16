@@ -15,6 +15,6 @@ public class ActivationTanh extends ActivationBase {
     public ActivationTanh(double k) {
         scale = k;
         activator = x -> tanh(scale * x);
-        deactivator = x -> scale / pow(cosh(scale * x), 2);
+        deactivator = x -> 1 - pow(tanh(scale * x), 2.0);
     }
 }

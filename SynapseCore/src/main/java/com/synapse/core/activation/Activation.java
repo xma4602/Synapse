@@ -20,7 +20,7 @@ public interface Activation extends Cloneable, Externalizable {
     }
 
     static Activation getDefault() {
-        return new ActivationLogistic(0.2);
+        return new ActivationLog(0.2);
     }
 
     static Activation[] arrayOf(Activation activation, int length) {

@@ -42,7 +42,7 @@ public class ActivationController implements ItemController<Activation> {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        activations.put(logistic, new ActivationLogistic(scaleValue));
+        activations.put(logistic, new ActivationLog(scaleValue));
         activations.put(tanh, new ActivationTanh(scaleValue));
         activations.put(atan, new ActivationAtan(scaleValue));
         activations.put(relu, new ActivationReLU(scaleValue));
