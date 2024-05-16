@@ -4,6 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.xma.synapse</groupId>
+        <artifactId>synapse</artifactId>
+        <version>1.0</version>
+    </parent>
+
     <groupId>com.xma.synapse.desktop</groupId>
     <artifactId>SynapseDesktop</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -16,40 +22,15 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.synapse.core</groupId>
-            <artifactId>SynapseCore</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/../SynapseCore/target/SynapseCore-1.0.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>com.synapse.core</groupId>
-            <artifactId>SynapseCore</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/../SynapseData/target/SynapseData-1.0.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.26</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.10</version>
-            <scope>compile</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j2-impl -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j2-impl</artifactId>
-            <version>2.23.1</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -113,24 +94,20 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.32</version>
+            <groupId>com.synapse.core</groupId>
+            <artifactId>SynapseCore</artifactId>
+            <version>1.0</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.xma.synapse.data</groupId>
+            <artifactId>SynapseData</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
