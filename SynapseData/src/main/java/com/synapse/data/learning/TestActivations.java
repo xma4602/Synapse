@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-class TestActivations {
+public class TestActivations {
 
 
     static String getNow() {

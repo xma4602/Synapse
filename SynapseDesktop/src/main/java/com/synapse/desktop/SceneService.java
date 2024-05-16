@@ -25,6 +25,7 @@ public class SceneService<T extends ItemController<?>>  {
         files.put(TrainingResultController.class, "training-result.fxml");
         files.put(TrainingPreparationController.class, "training-preparation.fxml");
         files.put(TrainingProcessController.class, "training-process.fxml");
+        files.put(ExperimentResultController.class, "experiment-result.fxml");
 
         files.put(RateController.class, "rate.fxml");
         files.put(SampleController.class, "samples.fxml");

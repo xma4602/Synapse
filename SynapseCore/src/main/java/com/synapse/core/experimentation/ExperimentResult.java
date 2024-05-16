@@ -6,15 +6,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
+import java.io.*;
 import java.time.Duration;
 import java.util.*;
 
 @NoArgsConstructor
 public class ExperimentResult implements Externalizable, Reportable {
+
+    @Serial
+    private static final long serialVersionUID = 4976194000916330708L;
 
     @Getter
     private SortedMap<Integer, Map.Entry<ExperimentParameters, TrainingResult>> experiences = new TreeMap<>();

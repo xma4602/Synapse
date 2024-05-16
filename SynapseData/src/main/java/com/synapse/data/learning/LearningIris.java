@@ -41,9 +41,9 @@ public class LearningIris {
                 Activation.arrayOf(new ActivationLog(0.3), 2)
         );
         experimenter.setBatchSizes(1);
-        experimenter.setErrorLimits(0.1);
-        experimenter.setRates(new ConstantRate(0.5));
-        experimenter.setEpochCounts(10);
+        experimenter.setErrorLimits(0.01);
+        experimenter.setRates(new ConstantRate(1.5));
+        experimenter.setEpochCounts(100);
         experimenter.setSampleServices(sampleService);
         experimenter.setLayerSizes(new int[]{IRIS_INPUT, 100, IRIS_OUTPUT});
 

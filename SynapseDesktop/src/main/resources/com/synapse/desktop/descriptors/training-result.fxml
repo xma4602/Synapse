@@ -3,59 +3,140 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <HBox maxHeight="1.7976931348623157E308" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.synapse.desktop.controllers.TrainingResultController">
    <children>
-      <LineChart fx:id="chart" animated="false" createSymbols="false" maxHeight="1.7976931348623157E308" prefHeight="1041.0" prefWidth="1294.0" style="-fx-stroke-width: 2px" title="Графики ошибок обучения">
-         <xAxis>
-            <NumberAxis label="Элементы обучения" side="BOTTOM" />
-         </xAxis>
-         <yAxis>
-            <NumberAxis label="Ошибка" side="LEFT" />
-         </yAxis>
-      </LineChart>
-      <VBox maxWidth="-Infinity" prefHeight="720.0" prefWidth="394.0">
+      <VBox>
          <children>
-            <VBox>
-               <children>
-                  <Label fx:id="time" text="Время обучения" wrapText="true" />
-                  <Label fx:id="reason" text="Принина остановки" wrapText="true" />
-                  <Label fx:id="epochs" text="Количество эпох" wrapText="true">
-                     <padding>
-                        <Insets bottom="20.0" />
-                     </padding>
-                  </Label>
-               </children>
-            </VBox>
-            <VBox>
-               <children>
-                  <ToggleButton fx:id="trainButton" mnemonicParsing="false" onAction="#drawCharts" prefHeight="50.0" prefWidth="190.0" selected="true" text="График обучения" />
-                  <Label fx:id="learnMinError" text="Мин. ошибка" wrapText="true" />
-                  <Label fx:id="learnMaxError" text="Макс. ошибка" wrapText="true" />
-                  <Label fx:id="learnAverageError" text="Ср. ошибка" wrapText="true">
-                     <padding>
-                        <Insets bottom="20.0" />
-                     </padding>
-                  </Label>
-               </children>
-            </VBox>
-            <VBox>
-               <children>
-                  <ToggleButton fx:id="testButton" mnemonicParsing="false" onAction="#drawCharts" prefHeight="50.0" prefWidth="190.0" selected="true" text="График тестирования" />
-                  <Label fx:id="testMinError" text="Мин. ошибка" wrapText="true" />
-                  <Label fx:id="testMaxError" text="Макс. ошибка" wrapText="true" />
-                  <Label fx:id="testAverageError" text="Ср. ошибка" wrapText="true" />
-               </children>
+            <LineChart fx:id="errorsChart" animated="false" createSymbols="false" maxHeight="1.7976931348623157E308" prefHeight="720.0" prefWidth="1072.0" style="-fx-stroke-width: 2px" title="Графики ошибок обучения">
+               <xAxis>
+                  <NumberAxis label="Элементы обучения" side="BOTTOM" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis label="Ошибка" side="LEFT" />
+               </yAxis>
+            </LineChart>
+            <LineChart fx:id="percentChart" animated="false" createSymbols="false" maxHeight="1.7976931348623157E308" prefHeight="720.0" prefWidth="1072.0" style="-fx-stroke-width: 2px" title="Графики процента распознавания">
+               <xAxis>
+                  <NumberAxis label="Эпохи обучения" side="BOTTOM" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis label="Процент" side="LEFT" />
+               </yAxis>
+            </LineChart>
+         </children>
+      </VBox>
+      <VBox maxWidth="-Infinity" prefHeight="720.0" prefWidth="321.0">
+         <children>
+            <Label fx:id="batchSize" prefWidth="500.0" text="Размер пакета" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="errorLimit" prefWidth="500.0" text="Целевая ошибка" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="rate" prefWidth="500.0" text="Ф-я скорости обучения" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="activation" prefWidth="500.0" text="Ф-я активации" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="layers" prefWidth="500.0" text="Структура слоев" wrapText="true">
                <padding>
                   <Insets bottom="20.0" />
                </padding>
-            </VBox>
-            <Button mnemonicParsing="false" onAction="#selectFile" prefHeight="50.0" prefWidth="190.0" text="Выбрать файл" />
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="time" prefWidth="500.0" text="Время обучения" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label fx:id="maxEpoch" prefWidth="500.0" text="Макс. кол-во эпох:" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="epochs" prefWidth="500.0" text="Количество эпох" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label fx:id="reason" alignment="TOP_LEFT" prefHeight="56.0" prefWidth="500.0" text="Причина остановки" wrapText="true">
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label prefWidth="500.0" text="Обучение:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="learnMinError" prefWidth="500.0" text="Мин. ошибка" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label fx:id="learnMaxError" prefWidth="500.0" text="Макс. ошибка" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label fx:id="learnAverageError" prefWidth="500.0" text="Ср. ошибка" wrapText="true">
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label prefWidth="500.0" text="Тестирование:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="testMinError" prefWidth="500.0" text="Мин. ошибка" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label fx:id="testMaxError" prefWidth="500.0" text="Макс. ошибка" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label fx:id="testAverageError" prefWidth="500.0" text="Ср. ошибка" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding></Label>
+            <Label fx:id="testMinPercent" prefWidth="500.0" text="Мин. процент" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="testMaxPercent" prefWidth="500.0" text="Макс. процент" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="testAveragePercent" prefWidth="500.0" text="Ср. процент" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
          </children>
       </VBox>
    </children>

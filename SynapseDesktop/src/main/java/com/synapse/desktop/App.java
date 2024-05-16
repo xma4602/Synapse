@@ -1,6 +1,8 @@
 package com.synapse.desktop;
 
-import com.synapse.desktop.controllers.TrainingResultController;
+import com.synapse.core.experimentation.ExperimentResult;
+import com.synapse.data.learning.LearningIris;
+import com.synapse.desktop.controllers.ExperimentResultController;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -14,11 +16,15 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        var control = new SceneService<>(TrainingResultController.class);
-        stage.setScene(control.getNewScene());
+        ExperimentResult experimentResult = LearningIris.learn();
+
+        var sceneService = new SceneService<>(ExperimentResultController.class);
+        sceneService.getController().setExperimentResult(experimentResult);
+
+        stage.setScene(sceneService.getNewScene());
         stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResource(icon)).openStream()));
-        stage.show();
         stage.centerOnScreen();
+        stage.show();
     }
 
     public static void main(String[] args) {
