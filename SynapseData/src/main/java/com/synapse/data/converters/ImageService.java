@@ -2,10 +2,21 @@ package com.synapse.data.converters;
 
 import com.synapse.core.matrix.Matrix;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.File;
+import java.io.IOException;
 
 public class ImageService {
+
+    public static boolean writeToFile(BufferedImage image, String format, File file) throws IOException {
+       return ImageIO.write(image, format,  file);
+    }
+
+    public static BufferedImage readFromFile(File file) throws IOException {
+        return ImageIO.read(file);
+    }
 
     public static Matrix convertRGB(BufferedImage source, boolean withAlphaChannel) {
         return Matrix.create(ImageService.getArrayRGB_withoutAlpha(source, withAlphaChannel));

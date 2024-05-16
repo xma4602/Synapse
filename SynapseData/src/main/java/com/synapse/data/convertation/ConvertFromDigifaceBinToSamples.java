@@ -29,7 +29,7 @@ public class ConvertFromDigifaceBinToSamples {
         dirs = Arrays.stream(dirs)
                 .map(file -> Map.entry(Integer.parseInt(file.getName()), file))
                 .sorted(Map.Entry.comparingByKey())
-                .limit(10)
+                .limit(3)
                 .map(Map.Entry::getValue)
                 .toArray(File[]::new);
 
