@@ -5,10 +5,9 @@ import com.synapse.core.activation.ActivationLog;
 import com.synapse.core.activation.ActivationTanh;
 import com.synapse.core.experimentation.ExperimentResult;
 import com.synapse.core.experimentation.Experimenter;
-import com.synapse.core.experimentation.SerialExperimenter;
+import com.synapse.core.experimentation.ParallelExperimenter;
 import com.synapse.core.rates.ConstantRate;
 import com.synapse.core.samples.FileSampleService;
-import com.synapse.core.samples.InMemorySampleService;
 import com.synapse.core.samples.SampleService;
 
 import java.io.File;
@@ -35,7 +34,7 @@ public class LearningDigiface {
         String root = "C:\\Users\\xma4602\\Documents\\ВУЗ\\Диплом\\программа\\datasets\\DigiFace";
         File[] samples = Path.of(root, "samples").toFile().listFiles();
 
-        Experimenter experimenter = new SerialExperimenter();
+        Experimenter experimenter = new ParallelExperimenter();
         experimenter.setActivations(
                 Activation.arrayOf(new ActivationLog(0.2), 2),
                 Activation.arrayOf(new ActivationTanh(0.2), 2)
@@ -49,9 +48,9 @@ public class LearningDigiface {
         experimenter.setBatchSizes(1);
         experimenter.setErrorLimits(0.1);
         experimenter.setEpochCounts(20);
-        experimenter.setSampleServices(new InMemorySampleService(
+        experimenter.setSampleServices(
                 new FileSampleService(SampleService.makeSampling(0.75, samples))
-        ));
+        );
         experimenter.setLayerSizes(new int[]{112 * 112 * 3, 3000, 3});
 
         ExperimentResult experimentResult = experimenter.call();
