@@ -2,10 +2,11 @@ package com.synapse.data.learning;
 
 import com.synapse.core.activation.Activation;
 import com.synapse.core.activation.ActivationLog;
+import com.synapse.core.activation.ActivationTanh;
 import com.synapse.core.experimentation.ExperimentResult;
 import com.synapse.core.experimentation.Experimenter;
 import com.synapse.core.experimentation.SerialExperimenter;
-import com.synapse.core.rates.Rate;
+import com.synapse.core.rates.ConstantRate;
 import com.synapse.core.samples.FileSampleService;
 import com.synapse.core.samples.InMemorySampleService;
 import com.synapse.core.samples.SampleService;
@@ -27,16 +28,26 @@ public class LearningDigiface {
 
 
     public static void main(String[] args) throws IOException {
+        learn();
+    }
+
+    public static ExperimentResult learn() throws IOException {
         String root = "C:\\Users\\xma4602\\Documents\\ВУЗ\\Диплом\\программа\\datasets\\DigiFace";
         File[] samples = Path.of(root, "samples").toFile().listFiles();
 
         Experimenter experimenter = new SerialExperimenter();
         experimenter.setActivations(
-                Activation.arrayOf(new ActivationLog(0.1), 2)
+                Activation.arrayOf(new ActivationLog(0.2), 2),
+                Activation.arrayOf(new ActivationTanh(0.2), 2)
         );
+        experimenter.setRates(
+                new ConstantRate(0.5),
+                new ConstantRate(1.0),
+                new ConstantRate(1.5)
+        );
+
         experimenter.setBatchSizes(1);
         experimenter.setErrorLimits(0.1);
-        experimenter.setRates(Rate.getDefault());
         experimenter.setEpochCounts(20);
         experimenter.setSampleServices(new InMemorySampleService(
                 new FileSampleService(SampleService.makeSampling(0.75, samples))
@@ -51,6 +62,6 @@ public class LearningDigiface {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(resultFile.toFile()))) {
             out.writeObject(experimentResult);
         }
-
+        return experimentResult;
     }
 }

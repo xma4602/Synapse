@@ -29,12 +29,16 @@ public class LearningCifar10 {
 
 
     public static void main(String[] args) throws IOException {
+       learn();
+    }
+
+    public static ExperimentResult learn() throws IOException {
         String root = "C:\\Users\\xma4602\\Documents\\ВУЗ\\Диплом\\программа\\datasets\\cifar-10";
         Path trainingFile = Path.of(root, "samples", "data_batch_1.sample");
         Path testingFile = Path.of(root, "samples", "test_batch.sample");
 
         InMemorySampleService sampleService = new InMemorySampleService(new FileSampleService(
-                List.of(trainingFile.toFile()), 1000,
+                List.of(trainingFile.toFile()), 500,
                 List.of(testingFile.toFile()), 500
         ));
 
@@ -47,7 +51,9 @@ public class LearningCifar10 {
                 Activation.arrayOf(new ActivationLog(4.0), 2)
         );
         experimenter.setRates(
-                new ConstantRate(1)
+                new ConstantRate(0.5),
+                new ConstantRate(1),
+                new ConstantRate(2)
         );
         experimenter.setEpochCounts(10);
         experimenter.setSampleServices(sampleService);
@@ -61,6 +67,6 @@ public class LearningCifar10 {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(resultFile.toFile()))) {
             out.writeObject(experimentResult);
         }
-
+        return experimentResult;
     }
 }

@@ -1,7 +1,7 @@
 package com.synapse.desktop;
 
 import com.synapse.core.experimentation.ExperimentResult;
-import com.synapse.data.learning.LearningIris;
+import com.synapse.data.learning.LearningDigiface;
 import com.synapse.desktop.controllers.ExperimentResultController;
 import javafx.application.Application;
 import javafx.scene.image.Image;
@@ -16,7 +16,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        ExperimentResult experimentResult = LearningIris.learn();
+        ExperimentResult experimentResult = LearningDigiface.learn();
 
         var sceneService = new SceneService<>(ExperimentResultController.class);
         sceneService.getController().setExperimentResult(experimentResult);

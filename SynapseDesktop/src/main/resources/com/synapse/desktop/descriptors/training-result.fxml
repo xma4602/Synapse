@@ -20,7 +20,7 @@
                   <NumberAxis label="Ошибка" side="LEFT" />
                </yAxis>
             </LineChart>
-            <LineChart fx:id="percentChart" animated="false" createSymbols="false" maxHeight="1.7976931348623157E308" prefHeight="720.0" prefWidth="1072.0" style="-fx-stroke-width: 2px" title="Графики процента распознавания">
+            <LineChart fx:id="percentChart" animated="false" createSymbols="false" maxHeight="1.7976931348623157E308" prefHeight="721.0" prefWidth="1015.0" style="-fx-stroke-width: 2px" title="Графики процента распознавания">
                <xAxis>
                   <NumberAxis label="Эпохи обучения" side="BOTTOM" />
                </xAxis>
