@@ -1,9 +1,13 @@
-package com.synapse.core.training;
+package com.synapse.core.training.testers;
 
 import com.synapse.core.matrix.Matrix;
 import com.synapse.core.nets.Net;
 import com.synapse.core.samples.Sample;
+import com.synapse.core.training.TrainingParameters;
+import com.synapse.core.training.TrainingResult;
+import lombok.Data;
 import lombok.Getter;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -13,18 +17,18 @@ import static com.synapse.core.tools.DelayedFormatter.format;
 
 @Getter
 @Slf4j
-public class Tester {
+public abstract class Tester {
 
     public static final double OVERFITTING_LIMIT = 1.0;
 
-    private final String name;
-    private double errorLimit;
-    private int maxEpochsCount;
-    private double minTestError;
-    private List<Double> testingErrors;
-    private List<Double> testingPercents;
-    private Net bestNet;
-    private TrainingResult.StopReason stopReason;
+    protected final String name;
+    protected double errorLimit;
+    protected int maxEpochsCount;
+    protected double minTestError;
+    protected List<Double> testingErrors;
+    protected List<Double> testingPercents;
+    protected Net bestNet;
+    protected TrainingResult.StopReason stopReason;
 
     public Tester(String name, TrainingParameters parameters) {
         this.name = name;
@@ -37,44 +41,30 @@ public class Tester {
 
     public void test(Net net, Iterable<Sample> samples, int epoch) {
         log.debug("{} |  TESTING:   STARTED: epoch={}", name, epoch);
-        double error = 0;
-        double percent = 0;
-        int count = 0;
 
-        for (Sample sample : samples) {
-            Matrix result = net.pass(sample.getSource());
-            Matrix target = sample.getTarget();
-            Matrix err = target.sub(result);
-            error += err.sqrsSum() / 2;
+        TestResult testResult = performTest(net, samples, epoch);
 
-            int resultIndex = getClassIndex(result);
-            int targetIndex = getClassIndex(target);
-            if (resultIndex == targetIndex) percent++;
-            count++;
-            log.trace("{} |  TESTING: epoch={}, count={}, error={}, percent={}%",
-                    name,
-                    format("%03d", epoch),
-                    format("%04d", count),
-                    format("%07.4f", error / count),
-                    format("%08.4f", percent / count * 100)
-            );
-        }
-
-        error /= count;
-        percent = percent / count * 100;
-        saveTestValues(net, error, percent);
+        saveTestValues(net, testResult.getError(), testResult.getPercent());
         double speed = getSpeed(testingErrors);
 
         log.debug("{} |  TESTING: COMPLETED: error={}, percent={}%, speed={}",
                 name,
-                format("%06.3f", error),
-                format("%06.3f", percent),
+                format("%06.3f", testResult.getError()),
+                format("%06.3f", testResult.getPercent()),
                 format("%07.4f", speed)
         );
 
-        determineResult(epoch, error, speed);
+        determineResult(epoch, testResult.getError(), speed);
     }
 
+    protected abstract TestResult performTest(Net net, Iterable<Sample> samples, int epoch);
+
+
+    @Value
+    protected static class TestResult {
+        double error;
+        double percent;
+    }
     private void saveTestValues(Net net, double error, double percent) {
         testingErrors.add(error);
         testingPercents.add(percent);
@@ -90,10 +80,9 @@ public class Tester {
         } else if (epoch >= maxEpochsCount) {
             stopReason = TrainingResult.StopReason.MAX_EPOCH;
         } else if (speed > OVERFITTING_LIMIT) {
-            log.debug("{} /  TESTING:  STOPPED: speed={}", name, speed);
+            log.debug("{} |  TESTING:  STOPPED: speed={}", name, speed);
             stopReason = TrainingResult.StopReason.OVERFITTING;
         }
-
     }
 
     public static int getClassIndex(Matrix matrix) {

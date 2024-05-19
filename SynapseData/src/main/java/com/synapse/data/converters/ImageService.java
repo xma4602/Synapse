@@ -19,17 +19,17 @@ public class ImageService {
     }
 
     public static Matrix convertRGB(BufferedImage source, boolean withAlphaChannel) {
-        return Matrix.create(ImageService.getArrayRGB_withoutAlpha(source, withAlphaChannel));
+        return Matrix.create(ImageService.getArrayRGB(source, withAlphaChannel));
     }
 
-    private static double[] getArrayRGB_withoutAlpha(BufferedImage image, boolean withAlphaChannel) {
+    private static double[] getArrayRGB(BufferedImage image, boolean withAlphaChannel) {
         byte[] pixels = loadPixels(image);
         boolean hasAlphaChannel = image.getAlphaRaster() != null;
 
         if (hasAlphaChannel && !withAlphaChannel) {
             return getArrayRGB_withoutAlpha(pixels);
         } else {
-            return getArrayARGB(pixels);
+            return getArrayARGB_withAlpha(pixels);
         }
     }
 
@@ -41,7 +41,7 @@ public class ImageService {
         return array;
     }
 
-    private static double[] getArrayARGB(byte[] pixels) {
+    private static double[] getArrayARGB_withAlpha(byte[] pixels) {
         double[] array = new double[pixels.length];
         for (int i = 0; i < pixels.length; i++) {
             array[i] = getUnsignedDouble(pixels[i]);

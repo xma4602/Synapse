@@ -17,7 +17,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        ExperimentResult experimentResult = LearningIris.learn();
+        ExperimentResult experimentResult = LearningDigiface.learn();
 
         var sceneService = new SceneService<>(ExperimentResultController.class);
         sceneService.getController().setExperimentResult(experimentResult);

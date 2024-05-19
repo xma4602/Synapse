@@ -1,6 +1,7 @@
 package com.synapse.core.experimentation;
 
 import com.synapse.core.rates.Rate;
+import com.synapse.core.tools.CoreContext;
 import com.synapse.core.tools.Monitored;
 import com.synapse.core.tools.Timing;
 import com.synapse.core.training.TrainingResult;
@@ -16,7 +17,7 @@ import java.util.concurrent.Future;
 @NoArgsConstructor
 public class ParallelExperimenter extends Experimenter {
 
-    protected final ExecutorService executor = Executors.newWorkStealingPool();
+    protected final ExecutorService executor = CoreContext.EXECUTOR_SERVICE;
     protected List<Experiment> experiments = new ArrayList<>();
 
     public static ParallelExperimenter getDefault() {

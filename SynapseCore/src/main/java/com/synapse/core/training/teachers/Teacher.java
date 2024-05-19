@@ -1,9 +1,11 @@
-package com.synapse.core.training;
+package com.synapse.core.training.teachers;
 
 import com.synapse.core.experimentation.ExperimentParameters;
 import com.synapse.core.nets.NetParameters;
 import com.synapse.core.samples.SampleService;
 import com.synapse.core.tools.Monitored;
+import com.synapse.core.training.TrainingParameters;
+import com.synapse.core.training.TrainingResult;
 import lombok.Getter;
 import lombok.Setter;
 

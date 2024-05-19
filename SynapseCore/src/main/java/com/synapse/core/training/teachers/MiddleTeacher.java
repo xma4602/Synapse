@@ -1,4 +1,4 @@
-package com.synapse.core.training;
+package com.synapse.core.training.teachers;
 
 import com.synapse.core.matrix.Matrix;
 import com.synapse.core.matrix.MatrixUtils;
@@ -8,6 +8,10 @@ import com.synapse.core.samples.Sample;
 import com.synapse.core.samples.SampleBatches;
 import com.synapse.core.tools.Monitored;
 import com.synapse.core.tools.Timing;
+import com.synapse.core.training.testers.ParallelTester;
+import com.synapse.core.training.testers.SerialTester;
+import com.synapse.core.training.testers.Tester;
+import com.synapse.core.training.TrainingResult;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,7 +47,7 @@ public class MiddleTeacher extends Teacher {
             log.debug("{} | TRAINING:   STARTED: epoch={}", teacherName, epochCount + 1);
 
             Iterable<Iterable<Sample>> batches = getNewBatches();
-            int batchCount = 1;
+            int batchCount = 0;
 
             for (Iterable<Sample> batch : batches) { //цикл по пакетам
                 MatrixUtils.zeros(correctionsW); //зануление накопителей корректировок
@@ -82,7 +86,7 @@ public class MiddleTeacher extends Teacher {
     private void resetVariables() {
         net = netParameters.createNet();
         rateFunc = trainingParameters.getRate();
-        tester = new Tester(teacherName, trainingParameters);
+        tester = new ParallelTester(teacherName, trainingParameters);
         trainingErrors = new ArrayList<>();
         trainingResult = new TrainingResult();
 
@@ -136,8 +140,8 @@ public class MiddleTeacher extends Teacher {
             log.trace("{} | TRAINING: epoch={}, batch={}, sample={}, error={}",
                     teacherName,
                     format("%03d", epochCount + 1),
-                    format("%05d", batchCount),
-                    format("%05d", sampleCount),
+                    format("%03d", batchCount + 1),
+                    format("%02d", sampleCount + 1),
                     format("%.4f", errorValue)
             );
         }

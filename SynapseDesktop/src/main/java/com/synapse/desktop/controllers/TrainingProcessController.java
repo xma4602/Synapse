@@ -2,8 +2,8 @@ package com.synapse.desktop.controllers;
 
 import com.synapse.core.experimentation.ExperimentParameters;
 import com.synapse.core.tools.Monitored;
-import com.synapse.core.training.SimpleTeacher;
-import com.synapse.core.training.Teacher;
+import com.synapse.core.training.teachers.SimpleTeacher;
+import com.synapse.core.training.teachers.Teacher;
 import com.synapse.core.training.TrainingResult;
 import com.synapse.desktop.SceneService;
 import com.synapse.desktop.io.Extension;

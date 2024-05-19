@@ -1,8 +1,8 @@
 package com.synapse.core.experimentation;
 
 import com.synapse.core.tools.Monitored;
-import com.synapse.core.training.MiddleTeacher;
-import com.synapse.core.training.Teacher;
+import com.synapse.core.training.teachers.MiddleTeacher;
+import com.synapse.core.training.teachers.Teacher;
 import com.synapse.core.training.TrainingResult;
 import lombok.Getter;
 import lombok.Setter;

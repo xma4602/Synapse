@@ -1,4 +1,4 @@
-package com.synapse.core.training;
+package com.synapse.core.training.teachers;
 
 import com.synapse.core.matrix.Matrix;
 import com.synapse.core.matrix.MatrixUtils;
@@ -8,6 +8,9 @@ import com.synapse.core.samples.Sample;
 import com.synapse.core.samples.SampleBatches;
 import com.synapse.core.tools.Monitored;
 import com.synapse.core.tools.Timing;
+import com.synapse.core.training.testers.SerialTester;
+import com.synapse.core.training.testers.Tester;
+import com.synapse.core.training.TrainingResult;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -114,7 +117,7 @@ public class SimpleTeacher extends Teacher {
     private void resetVariables() {
         net = netParameters.createNet();
         rateFunc = trainingParameters.getRate();
-        tester = new Tester(teacherName, trainingParameters);
+        tester = new SerialTester(teacherName, trainingParameters);
         trainingErrors = new ArrayList<>();
         trainingResult = new TrainingResult();
 

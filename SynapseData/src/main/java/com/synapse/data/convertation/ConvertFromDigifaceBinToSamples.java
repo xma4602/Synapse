@@ -1,6 +1,7 @@
 package com.synapse.data.convertation;
 
 import com.synapse.core.samples.Sample;
+import com.synapse.core.tools.CoreContext;
 import com.synapse.data.dataset.Digiface;
 
 import java.io.File;
@@ -19,7 +20,7 @@ import java.util.concurrent.Executors;
 public class ConvertFromDigifaceBinToSamples {
 
     public static void main(String[] args) throws InterruptedException {
-        String root = "C:\\Users\\xma4602\\Documents\\ВУЗ\\Диплом\\программа\\datasets\\DigiFace";
+        String root = "C:\\Users\\User\\Desktop\\Михаил Ханов\\DigiFace";
         File sourceDir = Path.of(root, "images").toFile();
         File resultDir = Path.of(root, "samples").toFile();
 
@@ -34,7 +35,7 @@ public class ConvertFromDigifaceBinToSamples {
                 .toArray(File[]::new);
 
         List<Callable<File>> tasks = getTasks(resultDir, dirs);
-        ExecutorService executorService = Executors.newWorkStealingPool();
+        ExecutorService executorService = CoreContext.EXECUTOR_SERVICE;
         executorService.invokeAll(tasks);
         executorService.shutdown();
     }
