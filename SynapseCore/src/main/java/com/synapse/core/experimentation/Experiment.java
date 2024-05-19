@@ -1,7 +1,7 @@
 package com.synapse.core.experimentation;
 
 import com.synapse.core.tools.Monitored;
-import com.synapse.core.training.SimpleTeacher;
+import com.synapse.core.training.MiddleTeacher;
 import com.synapse.core.training.Teacher;
 import com.synapse.core.training.TrainingResult;
 import lombok.Getter;
@@ -24,7 +24,7 @@ public class Experiment implements Callable<TrainingResult>, Monitored {
 
     @Override
     public TrainingResult call() {
-        teacher = new SimpleTeacher();
+        teacher = new MiddleTeacher();
         teacher.setTeacherName(experimentName + "-" + "teacher");
         teacher.setParameters(experimentParameters);
         return teacher.call();

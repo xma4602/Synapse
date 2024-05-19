@@ -50,6 +50,21 @@ public class MatrixUJMP implements Matrix {
     }
 
     @Override
+    public double getItem(int index) {
+        return getItem(index / getColumnsNumber(), index % getColumnsNumber());
+    }
+
+    @Override
+    public void setItem(int row, int column, double value) {
+        matrix2D.setAsDouble(value, row, column);
+    }
+
+    @Override
+    public void setItem(int index, double value) {
+        setItem(index / getColumnsNumber(), index % getColumnsNumber(), value);
+    }
+
+    @Override
     public double[] getArray() {
         int columnCount = (int) matrix2D.getColumnCount();
         int rowCount = (int) matrix2D.getRowCount();
@@ -201,10 +216,8 @@ public class MatrixUJMP implements Matrix {
         }
     }
 
-
     @Override
     public String toString() {
-        return "Matrix{%dx%d}".formatted(getRowsNumber(), getColumnsNumber());
+        return MatrixUtils.toString(this);
     }
-
 }

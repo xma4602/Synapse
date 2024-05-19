@@ -44,8 +44,28 @@ public class MatrixEJML implements Matrix {
     }
 
     @Override
+    public int getItemsNumber() {
+        return simpleMatrix.getNumElements();
+    }
+
+    @Override
     public double getItem(int row, int column) {
         return simpleMatrix.get(row, column);
+    }
+
+    @Override
+    public double getItem(int index) {
+        return simpleMatrix.get(index);
+    }
+
+    @Override
+    public void setItem(int row, int column, double value) {
+        simpleMatrix.set(row, column, value);
+    }
+
+    @Override
+    public void setItem(int index, double value) {
+        simpleMatrix.set(index, value);
     }
 
     @Override
@@ -108,7 +128,6 @@ public class MatrixEJML implements Matrix {
 
     @Override
     public Matrix apply(DoubleFunction<Double> function) {
-
         SimpleMatrix matrix = simpleMatrix.copy();
         var data = matrix.getDDRM().getData();
         for (int i = 0; i < matrix.getNumElements(); i++)
@@ -179,13 +198,7 @@ public class MatrixEJML implements Matrix {
 
     @Override
     public String toString() {
-        double[] data = simpleMatrix.getDDRM().data;
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < data.length - 1; i++) {
-            builder.append("%+.4f,".formatted(data[i]));
-        }
-        builder.append("%+.4f".formatted(data[data.length - 1]));
-        return "Matrix{%dx%d}[%s]".formatted(getRowsNumber(), getColumnsNumber(), builder);
+        return MatrixUtils.toString(this);
     }
 
 }

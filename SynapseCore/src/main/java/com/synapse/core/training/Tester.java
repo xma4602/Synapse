@@ -15,7 +15,7 @@ import static com.synapse.core.tools.DelayedFormatter.format;
 @Slf4j
 public class Tester {
 
-    public static final double OVERFITTING_LIMIT = 1.0;
+    public static final double OVERFITTING_LIMIT = 0.1;
 
     private final String name;
     private double errorLimit;
@@ -36,7 +36,7 @@ public class Tester {
     }
 
     public void test(Net net, Iterable<Sample> samples, int epoch) {
-        log.debug("{} /  TESTING:  STARTED: epoch={}", name, epoch);
+        log.debug("{} |  TESTING:   STARTED: epoch={}", name, epoch);
         double error = 0;
         double percent = 0;
         int count = 0;
@@ -51,19 +51,13 @@ public class Tester {
             int targetIndex = getClassIndex(target);
             if (resultIndex == targetIndex) percent++;
             count++;
-            log.trace("{} /  TESTING: count={}, error={}, percent={}%",
+            log.trace("{} |  TESTING: epoch={}, count={}, error={}, percent={}%",
                     name,
+                    format("%03d", epoch),
                     format("%04d", count),
                     format("%07.4f", error / count),
                     format("%08.4f", percent / count * 100)
             );
-//            log.trace("{} /  TESTING: count={}, error={}, percent={}%, result={}, target={}",
-//                    name,
-//                    format("%04d", count),
-//                    format("%07.4f", error / count),
-//                    format("%08.4f", percent / count * 100),
-//                    result, target
-//            );
         }
 
         error /= count;
@@ -71,7 +65,7 @@ public class Tester {
         saveTestValues(net, error, percent);
         double speed = getSpeed(testingErrors);
 
-        log.debug("{} /  TESTING: COMPLETED: error={}, percent={}%, speed={}",
+        log.debug("{} |  TESTING: COMPLETED: error={}, percent={}%, speed={}",
                 name,
                 format("%06.3f", error),
                 format("%06.3f", percent),
@@ -104,7 +98,7 @@ public class Tester {
 
     public static int getClassIndex(Matrix matrix) {
         int maxIndex = 0;
-        for (int i = 0; i < matrix.getItemNumber(); i++) {
+        for (int i = 0; i < matrix.getItemsNumber(); i++) {
             maxIndex = matrix.getItem(0, i) > matrix.getItem(0, maxIndex) ? i : maxIndex;
         }
         return maxIndex;

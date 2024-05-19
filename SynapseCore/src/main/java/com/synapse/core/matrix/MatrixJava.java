@@ -103,6 +103,11 @@ public class MatrixJava implements Matrix {
         return columnLength;
     }
 
+    @Override
+    public int getItemsNumber() {
+        return array.length;
+    }
+
     /**
      * Находит элемент матрицы по заданным координатам
      *
@@ -121,6 +126,21 @@ public class MatrixJava implements Matrix {
                     "Значение столбца должно было быть числом в диапазоне [0, %d], а было %d".formatted(columnLength - 1, column));
         }
         return array[columnLength * row + column];
+    }
+
+    @Override
+    public double getItem(int index) {
+        return array[index];
+    }
+
+    @Override
+    public void setItem(int row, int column, double value) {
+        array[row * columnLength + column] = value;
+    }
+
+    @Override
+    public void setItem(int index, double value) {
+        array[index] = value;
     }
 
     /**
@@ -389,24 +409,7 @@ public class MatrixJava implements Matrix {
         return Arrays.stream(array).iterator();
     }
 
-    private void columnsMismatch(Matrix left, Matrix right) {
-        if (left.getColumnsNumber() != right.getColumnsNumber())
-            throw new ArithmeticException("Не совпадает количество столбцов: %s и %s"
-                    .formatted(left.getColumnsNumber(), right.getColumnsNumber()));
-    }
 
-    private void rowsMismatch(Matrix left, Matrix right) {
-        if (left.getRowsNumber() != right.getRowsNumber())
-
-            throw new ArithmeticException("Не совпадает количество строк: %s и %s"
-                    .formatted(left.getRowsNumber(), right.getRowsNumber()));
-    }
-
-    private void rowsColumnsMismatch(Matrix left, Matrix right) {
-        if (left.getColumnsNumber() != right.getRowsNumber())
-            throw new ArithmeticException("Не совпадает количество столбцов левой матрицы и строк правой матрицы: %s и %s"
-                    .formatted(left.getColumnsNumber(), right.getRowsNumber()));
-    }
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
@@ -430,11 +433,6 @@ public class MatrixJava implements Matrix {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < array.length - 1; i++) {
-            builder.append("%+.4f,".formatted(array[i]));
-        }
-        builder.append("%+.4f".formatted(array[array.length - 1]));
-        return "Matrix{%dx%d}[%s]".formatted(getRowsNumber(), getColumnsNumber(), builder);
+        return MatrixUtils.toString(this);
     }
 }

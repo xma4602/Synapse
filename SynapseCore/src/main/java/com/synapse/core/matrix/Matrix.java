@@ -99,8 +99,11 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
      */
     int getColumnsNumber();
 
-
-    default int getItemNumber() {
+    /**
+     * Вычисляет количество элементов в матрице
+     * @return Значение количества элементов в матрице
+     */
+    default int getItemsNumber() {
         return getRowsNumber() * getColumnsNumber();
     }
 
@@ -114,6 +117,28 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
      * @throws IllegalArgumentException если значение строки и/или столбца выходит за допустимые границы
      */
     double getItem(int row, int column);
+
+    /**
+     * Находит элемент матрицы по заданным координатам
+     * @param index Порядковый номер элмента в матрице
+     * @return Элемент матрицы, находящийся в заданном индексе
+     */
+    double getItem(int index);
+
+    /**
+     * Задает элементу матрицы с указанными строкой и столбцом матрицы новое значение.
+     * @param row Строка элемента
+     * @param column Столбец элемента
+     * @param value Новое значение элемента
+     */
+    void setItem(int row, int column, double value);
+
+    /**
+     * Задает элементу матрицы с указанным индексом новое значение.
+     * @param index Строка элемента
+     * @param value Новое значение элемента
+     */
+    void setItem(int index, double value);
 
     /**
      * Приводит матрицу к одномерному массиву. Массив составляется из матрицы построчно
@@ -252,40 +277,24 @@ public interface Matrix extends Cloneable, Iterable<Double>, Externalizable {
      */
     void zeros();
 
-    static void zeros(Matrix... matrices) {
-        for (Matrix matrix : matrices) {
-            matrix.zeros();
-        }
-    }
-
     Matrix clone();
 
+    default void columnsMismatch(Matrix left, Matrix right) {
+        if (left.getColumnsNumber() != right.getColumnsNumber())
+            throw new ArithmeticException("Не совпадает количество столбцов: %s и %s"
+                    .formatted(left.getColumnsNumber(), right.getColumnsNumber()));
+    }
 
-//
-//    /**
-//     * Печатает матрицы в стандартный поток вывода
-//     *
-//     * @param matrices печатаемые матрицы
-//     */
-//    static void print(Matrix... matrices) {
-//        String[][] strings = new String[matrices.length][];
-//        int maxRow = 0;
-//        for (int i = 0; i < matrices.length; i++) {
-//            strings[i] = matrices[i].getReport().toArray(new String[0]);
-//            if (strings[i].length > maxRow) {
-//                maxRow = strings[i].length;
-//            }
-//        }
-//
-//        for (int row = 0; row < maxRow; row++) {
-//            for (String[] string : strings) {
-//                if (string.length > row) {
-//                    System.out.print(string[row] + "  ");
-//                } else {
-//                    System.out.print(" ".repeat(string[0].length()) + "  ");
-//                }
-//            }
-//            System.out.println();
-//        }
-//    }
+    default void rowsMismatch(Matrix left, Matrix right) {
+        if (left.getRowsNumber() != right.getRowsNumber())
+
+            throw new ArithmeticException("Не совпадает количество строк: %s и %s"
+                    .formatted(left.getRowsNumber(), right.getRowsNumber()));
+    }
+
+    default void rowsColumnsMismatch(Matrix left, Matrix right) {
+        if (left.getColumnsNumber() != right.getRowsNumber())
+            throw new ArithmeticException("Не совпадает количество столбцов левой матрицы и строк правой матрицы: %s и %s"
+                    .formatted(left.getColumnsNumber(), right.getRowsNumber()));
+    }
 }

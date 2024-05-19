@@ -1,6 +1,7 @@
 package com.synapse.core.training;
 
 import com.synapse.core.matrix.Matrix;
+import com.synapse.core.matrix.MatrixUtils;
 import com.synapse.core.nets.Net;
 import com.synapse.core.rates.Rate;
 import com.synapse.core.samples.Sample;
@@ -57,15 +58,15 @@ public class SimpleTeacher extends Teacher {
             int batchCount = 1;
 
             for (Iterable<Sample> batch : batches) { //цикл по пакетам
-                Matrix.zeros(dw); //зануление накопителей корректировок
-                Matrix.zeros(db); //зануление накопителей корректировок
+                MatrixUtils.zeros(dw); //зануление накопителей корректировок
+                MatrixUtils.zeros(db); //зануление накопителей корректировок
                 int sampleCount = 1;
 
                 for (Sample sample : batch) { //цикл одного пакета
-                    Matrix output = forwardPass(net, sample.getSource()); //прямой проход сети
+                    Matrix output = forwardPass(sample.getSource()); //прямой проход сети
                     Matrix trainingError = getError(sample.getTarget(), output); //вычисление ошибки сети
                     double error = calcTrainingError(trainingError); //сохранение тренировочной ошибки
-                    Matrix[][] corrects = backwardPass(net, trainingError); //обратный проход
+                    Matrix[][] corrects = backwardPass(trainingError); //обратный проход
                     addCorrections(corrects); //сложение корректировки прохода с корректировкой пакета
                     log.trace("{} / TRAINING: epoch={}, batch={}, sample={}, error={}",
                             teacherName,
@@ -74,20 +75,10 @@ public class SimpleTeacher extends Teacher {
                             format("%05d", sampleCount),
                             format("%.8f", error)
                     );
-//                    log.trace("{} / TRAINING: epoch={}, batch={}, sample={}, error={}, result={}, target={}",
-//                            teacherName,
-//                            format("%03d", epochCount + 1),
-//                            format("%05d", batchCount),
-//                            format("%05d", sampleCount),
-//                            format("%.8f", error),
-//                            output,
-//                            sample.getTarget()
-//                    );
                     sampleCount++;
                 }
 
-                double rate = rateFunc.apply(epochCount); //получение скорости обучения на данной эпохе
-                applyCorrections(net, dw, db, rate); //коррекция весов
+                applyCorrections(); //коррекция весов
                 batchCount++;
             }
 
@@ -155,7 +146,7 @@ public class SimpleTeacher extends Teacher {
         }
     }
 
-    private Matrix forwardPass(Net net, Matrix input) {
+    private Matrix forwardPass(Matrix input) {
         DoubleFunction<Double>[] f = net.getActivators();
         Matrix[] weights = net.getWeights();
         Matrix[] biases = net.getBiases();
@@ -168,20 +159,17 @@ public class SimpleTeacher extends Teacher {
         return y[y.length - 1]; // O = Y[L-1]
     }
 
-    private Matrix[][] backwardPass(Net net, Matrix error) {
+    private Matrix[][] backwardPass(Matrix error) {
         DoubleFunction<Double>[] df = net.getDeactivates();
         Matrix[] weights = net.getWeights();
-
         int last = w.length - 1;
 
-        Matrix apply = v[last].apply(df[last]);
-        g[last] = apply.prod(error).scale(-1); // δ[L-1] = -f'(V[L-1]) * E
+        g[last] = v[last].apply(df[last]).prod(error).scale(-1); // δ[L-1] = -f'(V[L-1]) * E
         w[last] = y[last].tMul(g[last]); // ΔW[L-1] = Y[L-1]^T x δ[L-1]
         b[last] = g[last]; // ΔB[L-1] = δ[L-1]
 
         for (int i = last - 1; i >= 0; i--) {
-            Matrix apply1 = v[i].apply(df[i]);
-            g[i] = apply1.prod(g[i + 1].mulT(weights[i + 1])); // δ[i] = f'(V[i]) * (δ[i+1] x W[i+1]^T)
+            g[i] = v[i].apply(df[i]).prod(g[i + 1].mulT(weights[i + 1])); // δ[i] = f'(V[i]) * (δ[i+1] x W[i+1]^T)
             w[i] = y[i].tMul(g[i]); // ΔW[i] = Y[i]^T x δ[i]
             b[i] = g[i]; // ΔB[i] = δ[i]
         }
@@ -189,15 +177,14 @@ public class SimpleTeacher extends Teacher {
         return new Matrix[][]{w, b};
     }
 
-    private void applyCorrections(Net net, Matrix[] dw, Matrix[] db, double rate) {
+    private void applyCorrections() {
         Matrix[] weights = net.getWeights();
         Matrix[] biases = net.getBiases();
+        double rate = rateFunc.apply(epochCount); //получение скорости обучения на данной эпохе
 
         for (int i = 0; i < net.getInterLayersCount(); i++) {
-            weights[i] = weights[i].scaleAdd(-rate, dw[i]); // W[i] = W[i] + (η * ΔW[i])
-            biases[i] = biases[i].scaleAdd(-rate, db[i]);  // B[i] = B[i] + (η * ΔB[i])
-//            weights[i] = weights[i].add(dw[i].scale(-rate));
-//            biases[i] = biases[i].add(db[i].scale(-rate));
+            weights[i] = weights[i].scaleAdd(-rate, dw[i]); // W[i] = W[i] + (-η * ΔW[i])
+            biases[i] = biases[i].scaleAdd(-rate, db[i]);  // B[i] = B[i] + (-η * ΔB[i])
         }
     }
 

@@ -4,7 +4,7 @@ import com.synapse.core.activation.Activation;
 import com.synapse.core.activation.ActivationLog;
 import com.synapse.core.experimentation.ExperimentResult;
 import com.synapse.core.experimentation.Experimenter;
-import com.synapse.core.experimentation.ParallelExperimenter;
+import com.synapse.core.experimentation.SerialExperimenter;
 import com.synapse.core.rates.ConstantRate;
 import com.synapse.core.samples.InMemorySampleService;
 import com.synapse.core.samples.Sample;
@@ -34,7 +34,7 @@ public class LearningIris {
         List<Sample> samples = readSamples(dataFile);
         InMemorySampleService sampleService = new InMemorySampleService(0.75, samples);
 
-        Experimenter experimenter = new ParallelExperimenter();
+        Experimenter experimenter = new SerialExperimenter();
         experimenter.setActivations(
                 Activation.arrayOf(new ActivationLog(0.1), 2),
                 Activation.arrayOf(new ActivationLog(0.2), 2),
@@ -42,7 +42,11 @@ public class LearningIris {
         );
         experimenter.setBatchSizes(1);
         experimenter.setErrorLimits(0.01);
-        experimenter.setRates(new ConstantRate(1.5));
+        experimenter.setRates(
+                new ConstantRate(0.5),
+                new ConstantRate(1.0),
+                new ConstantRate(1.5)
+        );
         experimenter.setEpochCounts(100);
         experimenter.setSampleServices(sampleService);
         experimenter.setLayerSizes(new int[]{IRIS_INPUT, 100, IRIS_OUTPUT});
