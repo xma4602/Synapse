@@ -15,7 +15,7 @@ import static com.synapse.core.tools.DelayedFormatter.format;
 @Slf4j
 public class Tester {
 
-    public static final double OVERFITTING_LIMIT = 0.1;
+    public static final double OVERFITTING_LIMIT = 1.0;
 
     private final String name;
     private double errorLimit;

@@ -4,6 +4,7 @@ import com.synapse.core.activation.Activation;
 import com.synapse.core.activation.ActivationLog;
 import com.synapse.core.experimentation.ExperimentResult;
 import com.synapse.core.experimentation.Experimenter;
+import com.synapse.core.experimentation.ParallelExperimenter;
 import com.synapse.core.experimentation.SerialExperimenter;
 import com.synapse.core.rates.ConstantRate;
 import com.synapse.core.samples.InMemorySampleService;
@@ -28,13 +29,12 @@ public class LearningIris {
     }
 
     public static ExperimentResult learn() throws IOException {
-        String root = "C:\\Users\\xma4602\\Documents\\ВУЗ\\Диплом\\программа\\datasets\\iris";
+        String root = "C:\\Users\\User\\Desktop\\Михаил Ханов\\iris";
         Path dataFile = Path.of(root, "samples", "data.sample");
 
-        List<Sample> samples = readSamples(dataFile);
-        InMemorySampleService sampleService = new InMemorySampleService(0.75, samples);
 
-        Experimenter experimenter = new SerialExperimenter();
+        Experimenter experimenter = new ParallelExperimenter();
+        InMemorySampleService sampleService = new InMemorySampleService(0.75, readSamples(dataFile));
         experimenter.setActivations(
                 new ActivationLog(0.1),
                 new ActivationLog(0.2),

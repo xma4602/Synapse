@@ -5,7 +5,6 @@ import com.synapse.desktop.SceneService;
 import com.synapse.desktop.io.Extension;
 import com.synapse.desktop.io.FileLoader;
 import com.synapse.desktop.io.FileSaver;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Tab;
@@ -38,7 +37,7 @@ public class ExperimentResultController implements ItemController<ExperimentResu
     private void setExperiences() {
         tabPane.getTabs().clear();
         for (var entry : experimentResult.getExperiences().entrySet()) {
-            String title = "Эксперимент " + entry.getKey();
+            String title = "Эксперимент " + (entry.getKey() + 1);
             var sceneService = new SceneService<>(TrainingResultController.class);
             sceneService.getController().setExperimentParameters(entry.getValue().getKey());
             sceneService.getController().setTrainingResult(entry.getValue().getValue());
@@ -49,12 +48,12 @@ public class ExperimentResultController implements ItemController<ExperimentResu
 
 
     @FXML
-    void openResult(ActionEvent event) {
+    void openResult() {
         try {
             ExperimentResult result = new FileLoader(getStage()).loadOneObject(Extension.EXP_RES);
             setExperimentResult(result);
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -64,7 +63,7 @@ public class ExperimentResultController implements ItemController<ExperimentResu
     }
 
     @FXML
-    void toMain(ActionEvent event) {
+    void toMain() {
         var sceneService = new SceneService<>(MainController.class);
         SceneService.switchScene(getStage(), sceneService.getNewScene());
     }

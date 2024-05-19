@@ -20,7 +20,6 @@ import java.util.ResourceBundle;
 
 public class TrainingPreparationController implements ItemController<ExperimentParameters> {
 
-    public static final int EXPERIENCE_COUNT = 10;
     @FXML
     private SubScene sampleScene;
     @FXML
@@ -232,7 +231,7 @@ public class TrainingPreparationController implements ItemController<ExperimentP
 
         NetParameters netParameters = new NetParameters();
         netParameters.setLayerSizes(netStructureController.getItem());
-        netParameters.setActivation(Activation.arrayOf(activationController.getItem(), netParameters.getLayerSizes().length));
+        netParameters.setActivation(activationController.getItem());
 
         TrainingParameters trainingParameters = parametersController.getItem();
         trainingParameters.setRate(rateController.getItem());
@@ -249,7 +248,7 @@ public class TrainingPreparationController implements ItemController<ExperimentP
         NetParameters netParameters = experimentParameters.getNetParameters();
         TrainingParameters trainingParameters = experimentParameters.getTrainingParameters();
         netStructureController.setLayers(netParameters.getLayerSizes());
-        activationController.setActivation(netParameters.getActivation()[0]);
+        activationController.setActivation(netParameters.getActivation());
         parametersController.setTrainingParameters(trainingParameters);
     }
 }

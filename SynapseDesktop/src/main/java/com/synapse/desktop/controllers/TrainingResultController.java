@@ -1,14 +1,18 @@
 package com.synapse.desktop.controllers;
 
 import com.synapse.core.experimentation.ExperimentParameters;
+import com.synapse.core.experimentation.ExperimentResult;
 import com.synapse.core.nets.NetParameters;
 import com.synapse.core.training.TrainingParameters;
 import com.synapse.core.training.TrainingResult;
+import com.synapse.desktop.io.Extension;
+import com.synapse.desktop.io.FileLoader;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Arrays;
@@ -85,8 +89,8 @@ public class TrainingResultController implements ItemController<TrainingResult> 
 
 
     public void setExperimentParameters(ExperimentParameters experimentParameters) {
-        this.experimentParameters = experimentParameters;
         if (experimentParameters != null) {
+            this.experimentParameters = experimentParameters;
             setParams();
         }
     }
@@ -155,16 +159,11 @@ public class TrainingResultController implements ItemController<TrainingResult> 
         maxEpoch.setText("Макс. кол-во эпох: " + trainingParameters.getMaxEpochsCount());
         batchSize.setText("Размер пакета: " + trainingParameters.getBatchSize());
         rate.setText("Ф-я скорости обучения: " + trainingParameters.getRate());
+        errorLimit.setText("Целевая ошибка: " + trainingParameters.getErrorLimit());
 
         NetParameters netParameters = experimentParameters.getNetParameters();
         layers.setText("Структура слоев: " + Arrays.toString(netParameters.getLayerSizes()));
-        activation.setText("Ф-я активации: " + netParameters.getActivation()[0]);
-    }
-
-
-    @FXML
-    void selectFile() {
-
+        activation.setText("Ф-я активации: " + netParameters.getActivation());
     }
 
     @Override

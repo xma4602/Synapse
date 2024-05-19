@@ -1,6 +1,5 @@
 package com.synapse.data.learning;
 
-import com.synapse.core.activation.Activation;
 import com.synapse.core.activation.ActivationLog;
 import com.synapse.core.experimentation.ExperimentResult;
 import com.synapse.core.experimentation.Experimenter;
@@ -38,24 +37,22 @@ public class LearningDigiface {
         File[] samples = Path.of(root, "samples").toFile().listFiles();
 
         Experimenter experimenter = new SerialExperimenter();
-        experimenter.setActivations(
-               new ActivationLog(0.2)
-        );
-        experimenter.setRates(
-                new ConstantRate(2.0)
-        );
 
-        experimenter.setBatchSizes(5);
-        experimenter.setErrorLimits(0.1);
-        experimenter.setEpochCounts(10);
         experimenter.setSampleServices(
                 new InMemorySampleService(new FileSampleService(SampleService.makeSampling(0.75, samples)))
         );
         experimenter.setLayerSizes(
-//                new int[]{DIGIFACE_INPUT, 06000, DIGIFACE_OUTPUT},
-//                new int[]{DIGIFACE_INPUT, 10000, DIGIFACE_OUTPUT},
                 new int[]{DIGIFACE_INPUT, 5000, 5000, DIGIFACE_OUTPUT}
         );
+        experimenter.setActivations(
+                new ActivationLog(0.4)
+        );
+        experimenter.setRates(
+                new ConstantRate(2.0)
+        );
+        experimenter.setBatchSizes(5);
+        experimenter.setErrorLimits(0.1);
+        experimenter.setEpochCounts(10);
 
         ExperimentResult experimentResult = experimenter.call();
         experimentResult.printReport();
