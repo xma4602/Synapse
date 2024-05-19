@@ -117,9 +117,12 @@ public class SimpleTeacher extends Teacher {
     private void resetVariables() {
         net = netParameters.createNet();
         rateFunc = trainingParameters.getRate();
-        tester = new SerialTester(teacherName, trainingParameters);
         trainingErrors = new ArrayList<>();
         trainingResult = new TrainingResult();
+
+        tester = new SerialTester();
+        tester.setName(teacherName);
+        tester.setTrainingParameters(trainingParameters);
 
         int layerCount = net.getInterLayersCount();
         y = new Matrix[layerCount + 1];

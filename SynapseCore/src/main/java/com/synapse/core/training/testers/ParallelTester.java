@@ -4,7 +4,7 @@ import com.synapse.core.matrix.Matrix;
 import com.synapse.core.nets.Net;
 import com.synapse.core.samples.Sample;
 import com.synapse.core.tools.CoreContext;
-import com.synapse.core.training.TrainingParameters;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -14,13 +14,10 @@ import java.util.concurrent.*;
 import static com.synapse.core.tools.DelayedFormatter.format;
 
 @Slf4j
+@NoArgsConstructor
 public class ParallelTester extends Tester {
 
     private ExecutorService executorService = CoreContext.EXECUTOR_SERVICE;
-
-    public ParallelTester(String name, TrainingParameters parameters) {
-        super(name, parameters);
-    }
 
     @Override
     protected TestResult performTest(Net net, Iterable<Sample> samples, int epoch) {

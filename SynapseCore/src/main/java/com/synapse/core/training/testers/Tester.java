@@ -5,9 +5,7 @@ import com.synapse.core.nets.Net;
 import com.synapse.core.samples.Sample;
 import com.synapse.core.training.TrainingParameters;
 import com.synapse.core.training.TrainingResult;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Value;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -17,11 +15,13 @@ import static com.synapse.core.tools.DelayedFormatter.format;
 
 @Getter
 @Slf4j
+@NoArgsConstructor
 public abstract class Tester {
 
     public static final double OVERFITTING_LIMIT = 1.0;
 
-    protected final String name;
+    @Setter
+    protected String name;
     protected double errorLimit;
     protected int maxEpochsCount;
     protected double minTestError;
@@ -30,8 +30,7 @@ public abstract class Tester {
     protected Net bestNet;
     protected TrainingResult.StopReason stopReason;
 
-    public Tester(String name, TrainingParameters parameters) {
-        this.name = name;
+    public void setTrainingParameters(TrainingParameters parameters){
         errorLimit = parameters.getErrorLimit();
         maxEpochsCount = parameters.getMaxEpochsCount();
         minTestError = Double.MAX_VALUE;

@@ -45,7 +45,7 @@ public class LearningDigiface {
                 new int[]{DIGIFACE_INPUT, 10000, DIGIFACE_OUTPUT}
         );
         experimenter.setActivations(
-                new ActivationLog(0.4)
+                new ActivationLog(0.1)
         );
         experimenter.setRates(
                 new ConstantRate(2.0)

@@ -9,7 +9,6 @@ import com.synapse.core.samples.SampleBatches;
 import com.synapse.core.tools.Monitored;
 import com.synapse.core.tools.Timing;
 import com.synapse.core.training.testers.ParallelTester;
-import com.synapse.core.training.testers.SerialTester;
 import com.synapse.core.training.testers.Tester;
 import com.synapse.core.training.TrainingResult;
 import lombok.NoArgsConstructor;
@@ -86,9 +85,12 @@ public class MiddleTeacher extends Teacher {
     private void resetVariables() {
         net = netParameters.createNet();
         rateFunc = trainingParameters.getRate();
-        tester = new ParallelTester(teacherName, trainingParameters);
         trainingErrors = new ArrayList<>();
         trainingResult = new TrainingResult();
+
+        tester = new ParallelTester();
+        tester.setName(teacherName);
+        tester.setTrainingParameters(trainingParameters);
 
         int layerCount = net.getInterLayersCount();
         Matrix[] weights = net.getWeights();
