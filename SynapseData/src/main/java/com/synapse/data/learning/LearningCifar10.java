@@ -29,7 +29,7 @@ public class LearningCifar10 {
 
 
     public static void main(String[] args) throws IOException {
-       learn();
+        learn();
     }
 
     public static ExperimentResult learn() throws IOException {
@@ -46,9 +46,9 @@ public class LearningCifar10 {
         experimenter.setBatchSizes(1);
         experimenter.setErrorLimits(0.1);
         experimenter.setActivations(
-                Activation.arrayOf(new ActivationLog(0.2), 2),
-                Activation.arrayOf(new ActivationLog(1.0), 2),
-                Activation.arrayOf(new ActivationLog(4.0), 2)
+                new ActivationLog(0.2),
+                new ActivationLog(1.0),
+                new ActivationLog(4.0)
         );
         experimenter.setRates(
                 new ConstantRate(0.5),

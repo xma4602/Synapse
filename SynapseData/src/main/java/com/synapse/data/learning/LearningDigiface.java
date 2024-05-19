@@ -34,16 +34,15 @@ public class LearningDigiface {
     }
 
     public static ExperimentResult learn() throws IOException {
-        String root = "C:\\Users\\xma4602\\Documents\\ВУЗ\\Диплом\\программа\\datasets\\DigiFace";
+        String root = "C:\\Users\\User\\Desktop\\Михаил Ханов\\DigiFace";
         File[] samples = Path.of(root, "samples").toFile().listFiles();
 
         Experimenter experimenter = new SerialExperimenter();
         experimenter.setActivations(
-                Activation.arrayOf(new ActivationLog(0.2), 2)
-//                Activation.arrayOf(new ActivationTanh(0.2), 2)
+               new ActivationLog(0.2)
         );
         experimenter.setRates(
-                new ConstantRate(1.0)
+                new ConstantRate(2.0)
         );
 
         experimenter.setBatchSizes(5);
@@ -55,7 +54,7 @@ public class LearningDigiface {
         experimenter.setLayerSizes(
 //                new int[]{DIGIFACE_INPUT, 06000, DIGIFACE_OUTPUT},
 //                new int[]{DIGIFACE_INPUT, 10000, DIGIFACE_OUTPUT},
-                new int[]{DIGIFACE_INPUT, 30000, DIGIFACE_OUTPUT}
+                new int[]{DIGIFACE_INPUT, 5000, 5000, DIGIFACE_OUTPUT}
         );
 
         ExperimentResult experimentResult = experimenter.call();

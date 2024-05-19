@@ -24,7 +24,7 @@ public abstract class Experimenter implements Callable<ExperimentResult>, Monito
     @Getter
     private List<int[]> layerSizes;
     @Getter
-    private List<Activation[]> activations;
+    private List<Activation> activations;
     @Getter
     private List<Rate> rates;
     @Getter
@@ -111,7 +111,7 @@ public abstract class Experimenter implements Callable<ExperimentResult>, Monito
         this.layerSizes = List.of(layerSizes);
     }
 
-    public void setActivations(Activation[]... activations) {
+    public void setActivations(Activation... activations) {
         this.activations = List.of(activations);
     }
 

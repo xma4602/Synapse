@@ -232,7 +232,7 @@ public class TrainingPreparationController implements ItemController<ExperimentP
 
         NetParameters netParameters = new NetParameters();
         netParameters.setLayerSizes(netStructureController.getItem());
-        netParameters.setActivations(Activation.arrayOf(activationController.getItem(), netParameters.getLayerSizes().length));
+        netParameters.setActivation(Activation.arrayOf(activationController.getItem(), netParameters.getLayerSizes().length));
 
         TrainingParameters trainingParameters = parametersController.getItem();
         trainingParameters.setRate(rateController.getItem());
@@ -249,7 +249,7 @@ public class TrainingPreparationController implements ItemController<ExperimentP
         NetParameters netParameters = experimentParameters.getNetParameters();
         TrainingParameters trainingParameters = experimentParameters.getTrainingParameters();
         netStructureController.setLayers(netParameters.getLayerSizes());
-        activationController.setActivation(netParameters.getActivations()[0]);
+        activationController.setActivation(netParameters.getActivation()[0]);
         parametersController.setTrainingParameters(trainingParameters);
     }
 }

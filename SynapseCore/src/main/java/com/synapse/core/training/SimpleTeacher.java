@@ -147,29 +147,29 @@ public class SimpleTeacher extends Teacher {
     }
 
     private Matrix forwardPass(Matrix input) {
-        DoubleFunction<Double>[] f = net.getActivators();
+        DoubleFunction<Double> f = net.getActivator();
         Matrix[] weights = net.getWeights();
         Matrix[] biases = net.getBiases();
 
         y[0] = input; // Y[0] = X
         for (int i = 0; i < net.getInterLayersCount(); i++) {
             v[i] = y[i].mul(weights[i]).add(biases[i]); // V[i] = Y[i] x W[i] + B[i]
-            y[i + 1] = v[i].apply(f[i]); // Y[i+1] = f(V[i])
+            y[i + 1] = v[i].apply(f); // Y[i+1] = f(V[i])
         }
         return y[y.length - 1]; // O = Y[L-1]
     }
 
     private Matrix[][] backwardPass(Matrix error) {
-        DoubleFunction<Double>[] df = net.getDeactivates();
+        DoubleFunction<Double> df = net.getDeactivator();
         Matrix[] weights = net.getWeights();
         int last = w.length - 1;
 
-        g[last] = v[last].apply(df[last]).prod(error).scale(-1); // δ[L-1] = -f'(V[L-1]) * E
+        g[last] = v[last].apply(df).prod(error).scale(-1); // δ[L-1] = -f'(V[L-1]) * E
         w[last] = y[last].tMul(g[last]); // ΔW[L-1] = Y[L-1]^T x δ[L-1]
         b[last] = g[last]; // ΔB[L-1] = δ[L-1]
 
         for (int i = last - 1; i >= 0; i--) {
-            g[i] = v[i].apply(df[i]).prod(g[i + 1].mulT(weights[i + 1])); // δ[i] = f'(V[i]) * (δ[i+1] x W[i+1]^T)
+            g[i] = v[i].apply(df).prod(g[i + 1].mulT(weights[i + 1])); // δ[i] = f'(V[i]) * (δ[i+1] x W[i+1]^T)
             w[i] = y[i].tMul(g[i]); // ΔW[i] = Y[i]^T x δ[i]
             b[i] = g[i]; // ΔB[i] = δ[i]
         }

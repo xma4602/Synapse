@@ -18,10 +18,10 @@ import java.util.List;
 @AllArgsConstructor
 public class NetParameters implements Cloneable, Externalizable, Reportable {
     private int[] layerSizes;
-    private Activation[] activations;
+    private Activation activation;
 
     public Net createNet() {
-        return new Net(layerSizes, activations);
+        return new Net(layerSizes, activation);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class NetParameters implements Cloneable, Externalizable, Reportable {
         try {
             NetParameters clone = (NetParameters) super.clone();
             clone.setLayerSizes(layerSizes);
-            clone.setActivations(activations);
+            clone.setActivation(activation);
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
@@ -42,10 +42,8 @@ public class NetParameters implements Cloneable, Externalizable, Reportable {
         for (int layerSize : layerSizes) {
             out.writeInt(layerSize);
         }
-        out.writeInt(activations.length);
-        for (Activation activation : activations) {
-            out.writeObject(activation);
-        }
+        out.writeObject(activation);
+
     }
 
     @Override
@@ -54,10 +52,7 @@ public class NetParameters implements Cloneable, Externalizable, Reportable {
         for (int i = 0; i < layerSizes.length; i++) {
             layerSizes[i] = in.readInt();
         }
-        activations = new Activation[in.readInt()];
-        for (int i = 0; i < activations.length; i++) {
-            activations[i] = (Activation) in.readObject();
-        }
+        activation = (Activation) in.readObject();
     }
 
     @Override
@@ -65,7 +60,7 @@ public class NetParameters implements Cloneable, Externalizable, Reportable {
         return List.of(
                 "NetParameters:\n",
                 "\tlayerSizes=%s\n".formatted(Arrays.toString(layerSizes)),
-                "\tactivations=%s\n".formatted(Arrays.toString(activations))
-                );
+                "\tactivation=%s\n".formatted(activation)
+        );
     }
 }

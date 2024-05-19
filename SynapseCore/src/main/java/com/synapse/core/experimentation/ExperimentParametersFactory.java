@@ -43,8 +43,8 @@ public class ExperimentParametersFactory {
         setNetParams(NetParameters::setLayerSizes, layerSizes);
     }
 
-    public void setActivations(List<Activation[]> activations) {
-        setNetParams(NetParameters::setActivations, activations);
+    public void setActivations(List<Activation> activations) {
+        setNetParams(NetParameters::setActivation, activations);
     }
 
 

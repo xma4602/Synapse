@@ -36,9 +36,9 @@ public class LearningIris {
 
         Experimenter experimenter = new SerialExperimenter();
         experimenter.setActivations(
-                Activation.arrayOf(new ActivationLog(0.1), 2),
-                Activation.arrayOf(new ActivationLog(0.2), 2),
-                Activation.arrayOf(new ActivationLog(0.3), 2)
+                new ActivationLog(0.1),
+                new ActivationLog(0.2),
+                new ActivationLog(0.3)
         );
         experimenter.setBatchSizes(1);
         experimenter.setErrorLimits(0.01);

@@ -158,7 +158,7 @@ public class TrainingResultController implements ItemController<TrainingResult> 
 
         NetParameters netParameters = experimentParameters.getNetParameters();
         layers.setText("Структура слоев: " + Arrays.toString(netParameters.getLayerSizes()));
-        activation.setText("Ф-я активации: " + netParameters.getActivations()[0]);
+        activation.setText("Ф-я активации: " + netParameters.getActivation()[0]);
     }
 
 

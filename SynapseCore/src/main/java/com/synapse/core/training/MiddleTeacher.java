@@ -123,7 +123,7 @@ public class MiddleTeacher extends Teacher {
                 v[i] = Matrix.create(weights[i].getColumnsNumber());
                 g[i] = Matrix.create(weights[i].getColumnsNumber());
                 w[i] = Matrix.create(weights[i].getRowsNumber(), weights[i].getColumnsNumber());
-                b[i] = Matrix.create(weights[i].getColumnsNumber());
+                b[i] = Matrix.create(biases[i].getColumnsNumber());
             }
             errorMatrix = Matrix.create(weights[weights.length - 1].getColumnsNumber());
         }
@@ -138,13 +138,13 @@ public class MiddleTeacher extends Teacher {
                     format("%03d", epochCount + 1),
                     format("%05d", batchCount),
                     format("%05d", sampleCount),
-                    format("%.8f", errorValue)
+                    format("%.4f", errorValue)
             );
         }
 
 
         private void forwardPass(Matrix input) {
-            DoubleFunction<Double>[] f = net.getActivators();
+            DoubleFunction<Double> f = net.getActivator();
             Matrix[] weights = net.getWeights();
             Matrix[] biases = net.getBiases();
 
@@ -154,7 +154,7 @@ public class MiddleTeacher extends Teacher {
                 MatrixUtils.mul(y[i], weights[i], v[i]);
                 MatrixUtils.add(v[i], biases[i], v[i]);
                 // Y[i+1] = f(V[i])
-                MatrixUtils.apply(v[i], f[i], y[i + 1]);
+                MatrixUtils.apply(v[i], f, y[i + 1]);
             }
         }
 
@@ -165,12 +165,12 @@ public class MiddleTeacher extends Teacher {
         }
 
         private void backwardPass() {
-            DoubleFunction<Double>[] df = net.getDeactivates();
+            DoubleFunction<Double> df = net.getDeactivator();
             Matrix[] weights = net.getWeights();
             int last = w.length - 1;
 
             // δ[L-1] = -f'(V[L-1]) * E
-            MatrixUtils.apply(v[last], df[last], g[last]);
+            MatrixUtils.apply(v[last], df, g[last]);
             MatrixUtils.prod(g[last], errorMatrix, g[last]);
             MatrixUtils.scale(g[last], -1.0, g[last]);
 
@@ -181,7 +181,7 @@ public class MiddleTeacher extends Teacher {
 
             for (int i = last - 1; i >= 0; i--) {
                 // δ[i] = f'(V[i]) * (δ[i+1] x W[i+1]^T)
-                MatrixUtils.apply(v[i], df[i], v[i]);
+                MatrixUtils.apply(v[i], df, v[i]);
                 MatrixUtils.mulT(g[i + 1], weights[i + 1], g[i]);
                 MatrixUtils.prod(v[i], g[i], g[i]);
 
